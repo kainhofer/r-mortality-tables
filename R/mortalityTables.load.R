@@ -1,3 +1,13 @@
+data.Namespace.name = "data:MortalityTables"
+
+
+# When unloading, also remove all loaded mortality tables from the "data:MortalityTables" namespace
+.onDetach <- function(libpath) {
+    if (data.Namespace.name %in% search()) {
+        detach(data.Namespace.name, character.only = TRUE)
+    }
+}
+
 #' Load a named set of mortality tables provided by the \link{MortalityTables} package
 #'
 #' @param dataset The set(s) of life tables to be loaded. A list of all available
@@ -21,7 +31,6 @@
 #' @export
 mortalityTables.load = function(dataset, package = c("^MortalityTables", "^PensionTables"), prefix = "MortalityTables") {
     # TODO: Generalize lib.loc to a function parameter
-
     # We want all files that are of the following form:
     #   [LIBDIR]/MortalityTables*/extdata/[PREFIX]_[NAME].R
     # where [NAME] matches the dataset argument and load them
@@ -43,17 +52,39 @@ mortalityTables.load = function(dataset, package = c("^MortalityTables", "^Pensi
 
         loaded = FALSE
         for(filename in files) {
+            # TODO: Extract the dataset name from the filename
+            sname = gsub(paste('^', prefix, '_(.*).R$', sep = ""), '\\1', basename(filename))
+            sname = gsub("[^-A-Za-z0-9_.]", "", sname);
+
+            # Make sure the data namespace is available in the search path!
+            if (!data.Namespace.name %in% search()) {
+                attach(list(), name = data.Namespace.name)
+                oop <- options(topLevelEnvironment = globalenv())
+                on.exit(options(oop))
+            }
+            dataenv = as.environment(data.Namespace.name)
+
+            if (sname %in% dataenv$.tables.loaded) {
+                message("Dataset '", sname, "' was already loaded...")
+                loaded = TRUE
+                next
+            } else {
+                message("Loading table dataset '", sname, "'");
+            }
             # Taken from the definition of sys.source and adjusted to include the
             # encoding (required for Windows, otherwise UTF8-strings will be broken!)
             lines = readLines(filename, encoding = "UTF-8", warn = FALSE)
             srcfile = srcfilecopy(filename, lines, file.mtime(filename), isFile = TRUE)
             exprs = parse(text = lines, srcfile = srcfile, keep.source = TRUE)
             for (i in seq_along(exprs))
-                eval(exprs[i], envir = globalenv())
+                # eval(exprs[i], envir = globalenv())
+                eval(exprs[i], envir = dataenv)
 
             # sys.source(filename, envir = globalenv())
             loaded = TRUE
-
+            # .tables.loaded <<- c(.tables.loaded, sname)
+            assign(x = ".tables.loaded", value = c(dataenv$.tables.loaded, sname), envir = dataenv)
+            print(dataenv$.tables.loaded)
         }
         if (!loaded) {
             warning(sprintf("Unable to locate dataset '%s' provided by the %s package!", set, package));
