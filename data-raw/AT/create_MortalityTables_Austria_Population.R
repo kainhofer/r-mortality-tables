@@ -14,7 +14,7 @@ library(rlang)
 ###############################################################################
 ### Volkszählungen Österreich
 ###############################################################################
-censusfile = here("data-raw", "AT", "ausfuehrliche_allgemeine_und_ausgeglichene_sterbetafeln_186871_bis_201012_.xlsx")
+censusfile = here("data-raw", "AT", "Population", "ausfuehrliche_allgemeine_und_ausgeglichene_sterbetafeln_186871_bis_201012_.xlsx")
 censusfile.out = here("data", "mort.AT.census.RData")
 
 mort.AT.census = array(
@@ -95,7 +95,7 @@ mort.AT.census.2011.female = censtable(censusfile, table = "2010/12",   baseYear
 
 #### Unisex Tables
 
-mort.AT.census.2011.unisex = censtable(a.censusfileU, table = "2010/12", baseYear = 2011, sheet = "2010_2012 zusammen", sex = "u")
+mort.AT.census.2011.unisex = censtable(censusfile, table = "2010/12", baseYear = 2011, sheet = "2010_2012 zusammen", sex = "u")
 
 #### Data arrays rather than tables
 
@@ -152,7 +152,7 @@ save(
 library(reshape2)
 library(openxlsx)
 
-abridgedfile = here("data-raw", "AT", "jaehrliche_sterbetafeln_1947_bis_2019__fuer_oesterreich.xlsx")
+abridgedfile = here("data-raw", "AT", "Population", "jaehrliche_sterbetafeln_1947_bis_2019__fuer_oesterreich.xlsx")
 abridgedfile.out = here("data", "mort.AT.observed.RData")
 
 wb = openxlsx::loadWorkbook(abridgedfile)
@@ -174,7 +174,7 @@ loadSheet = function(wb, sheet = "2017") {
     dplyr::mutate(age = as.integer(age), year = as.integer(sheet)) %>%
     tidyr::gather(key = sex, value = qx, -age, -year) %>%
     dplyr::select(year, sex, age, qx) %>%
-    tibble::as_tibble
+    as_tibble
 
   data
 }
@@ -233,11 +233,11 @@ save(
 
 library(openxlsx)
 
-forecastfile = here("data-raw", "AT", "StatistikAustria_qx_Prognose_mittleresSzenario_2014-2080.xlsx")
-forecastfile.out = here("data", "mort.AT.forecast.RData")
+forecastfile = here::here("data-raw", "AT", "Population", "StatistikAustria_qx_Prognose_mittleresSzenario_2014-2080.xlsx")
+forecastfile.out = here::here("data", "mort.AT.forecast.RData")
 
-AT.pop.fc.M = read.xlsx(forecastfile, startRow = 1, rows = c(1,3:103), rowNames = TRUE)
-AT.pop.fc.F = read.xlsx(forecastfile, startRow = 1, rows = c(1,105:206), rowNames = TRUE)
+AT.pop.fc.M = openxlsx::read.xlsx(forecastfile, startRow = 1, rows = c(1,3:103), rowNames = TRUE)
+AT.pop.fc.F = openxlsx::read.xlsx(forecastfile, startRow = 1, rows = c(1,105:206), rowNames = TRUE)
 
 mort.AT.forecast.male = mortalityTable.observed(
   name = "Österreich Männer (mittl. Sz.)",
@@ -324,7 +324,90 @@ save(
 
 
 
+###############################################################################
+### MCMC fit (derived during creation of the AVÖ 2018-P by Jonas Hirz)
+### Datenquelle: Statistik Austria, Method: Jonas Hirz
+###############################################################################
 
+library(pracma)
+MCMCfile = here::here("data-raw", "AT", "Population", "Austria_Population_MCMC2018.csv")
+MCMCfile.out = here::here("data", "mort.AT.MCMC.RData")
+
+mort.AT.MCMC.load = function() {
+  data = utils::read.csv(MCMCfile, skip = 5, encoding = "UTF-8", check.names = FALSE);
+  data.array = data %>% as_tibble %>%
+    gather(Variable, Value, -Parameter, -Alter) %>%
+    separate(Variable, into = c("Geschlecht", "Jahr"), sep = ", ") %>%
+    filter(Jahr == "1980") %>%
+    mutate(Jahr = NULL) %>%
+    acast(Alter ~ Geschlecht ~ Parameter, value.var = "Value")
+
+  exp(data.array[,,"alpha"])/2
+  mort.AT.MCMC = array(
+    data = c(mortalityTable.NA),
+    dim = c(3),
+    dimnames = list(Geschlecht = c("m", "w", "u"))
+  )
+
+  MCMC.trend.damping = function(t) { 200 * atan(t / 200) }
+
+  # Parameter für Whittaker-Smoothing:
+  d = 2
+  lambda = 10
+  # TODO: Eta einbauen
+  mort.AT.MCMC[["m"]] =  mortalityTable.trendProjection(
+    name = "Österreich MCMC Männer",
+    ages = as.integer(dimnames(data.array)[[1]]),
+    baseYear = 2008,
+    deathProbs = exp(whittaker(data.array[,"Mann","alpha"], lambda = lambda, d = d))/2,
+    trend = whittaker(-data.array[,"Mann","beta"], lambda = lambda, d = d),
+    dampingFunction = MCMC.trend.damping,
+    data = list(
+      dim = list(sex = "m", collar = "Gesamtbevölkerung", type = "MCMC-Fit 1980-2017", data = "MCMC", year = "1980-2017", Tafel = "MCMC-Zerlegung Bevölkerungssterblichkeit")
+    )
+  ) %>%
+    mT.fitExtrapolationLaw(law = "HP2", method = "LF2", fit = 80:98, extrapolate = 90:120, fadeIn = 90:99) %>%
+    mT.extrapolateTrendExp(idx = 92, up = TRUE)
+
+  mort.AT.MCMC[["w"]] =  mortalityTable.trendProjection(
+    name = "Österreich MCMC Frauen",
+    ages = as.integer(dimnames(data.array)[[1]]),
+    baseYear = 2008,
+    deathProbs = exp(whittaker(data.array[,"Frau","alpha"], lambda = lambda, d = d))/2,
+    trend = whittaker(-data.array[,"Frau","beta"], lambda = lambda, d = d),
+    dampingFunction = MCMC.trend.damping,
+    data = list(
+      dim = list(sex = "w", collar = "Gesamtbevölkerung", type = "MCMC-Fit 1980-2017", data = "MCMC", year = "1980-2017", Tafel = "MCMC-Zerlegung Bevölkerungssterblichkeit")
+    )
+  ) %>%
+    mT.fitExtrapolationLaw(law = "HP2", method = "LF2", fit = 80:98, extrapolate = 90:120, fadeIn = 90:99) %>%
+    mT.extrapolateTrendExp(idx = 94, up = TRUE)
+
+  mort.AT.MCMC[["u"]] =  mortalityTable.trendProjection(
+    name = "Österreich MCMC Unisex",
+    ages = as.integer(dimnames(data.array)[[1]]),
+    baseYear = 2008,
+    deathProbs = exp(whittaker(data.array[,"Unisex","alpha"], lambda = lambda, d = d))/2,
+    trend = whittaker(-data.array[,"Unisex","beta"], lambda = lambda, d = d),
+    dampingFunction = MCMC.trend.damping,
+    data = list(
+      dim = list(sex = "u", collar = "Gesamtbevölkerung", type = "MCMC-Fit 1980-2017", data = "MCMC", year = "1980-2017", Tafel = "MCMC-Zerlegung Bevölkerungssterblichkeit")
+    )
+  ) %>%
+    mT.fitExtrapolationLaw(law = "HP2", method = "LF2",fit = 80:98, extrapolate = 90:120, fadeIn = 90:99) %>%
+    mT.extrapolateTrendExp(idx = 98, up = TRUE)
+
+  mort.AT.MCMC
+}
+
+
+
+mort.AT.MCMC = mort.AT.MCMC.load()
+
+save(
+  mort.AT.MCMC,
+  file = MCMCfile.out
+)
 
 
 
