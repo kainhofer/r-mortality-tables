@@ -29,18 +29,32 @@ setMethod("ageShift", "mortalityTable", function(object, YOB, ...) {
 setMethod("ageShift",
           "mortalityTable.ageShift",
           function(object, YOB, ...) {
-              shift = object@ageShifts[toString(YOB),];
-              if (is.na(shift)) {
-                  # The row names (YOB) are unfortunately strings, so we cannot easily query them.
-                  # TODO: Change the data.frame to use a real column for the YOB
-                  firstYOB = utils::head(rownames(object@ageShifts), n = 1);
-                  lastYOB = utils::tail(rownames(object@ageShifts), n = 1);
-                  if (YOB < as.integer(firstYOB)) {
-                      shift = object@ageShifts[firstYOB,];
-                  } else if (YOB > as.integer(lastYOB)) {
-                      shift = object@ageShifts[lastYOB,];
+              shifts = object@ageShifts
+              if (NCOL(shifts) == 1) {
+                  .Deprecated(new = "ageShift", msg = "Defining age shifts by a single-column data.frame with birth years as rownames is deprecated. Please switch to a dataframe with columns c(\"from\", \"to\", \"shift\")!")
+                  # old-style data.frame with years as rownames
+                  shift = shifts[[toString(YOB),1]]
+                  if (!is.na(shift)) {
+                      return(shift)
+                  } else {
+                      colnames(shifts) = c("shift")
+                      shifts$from = as.numeric(rownames(shifts))
+                      shifts$to = shifts$from
+                  }
+              } else if ("YOB" %in% colnames(shifts)) {
+                  shifts$from = shifts$YOB
+                  shifts$to = shifts$YOB
+              }
+
+              for(i in 1:nrow(shifts)) {
+                  if (
+                      ((shifts[i,"from"] <= YOB) || is.na(shifts[i,"from"])) &&
+                      (YOB <= shifts[i, "to"] || is.na(shifts[i, "to"]))
+                     ) {
+                      return(shifts[[i, "shift"]])
                   }
               }
-              shift
+              warning("Unable to determine age-shift for birth year ", YOB, " with table \"", object@name, "\". Default of 0 is used.")
+              return(0)
           })
 

@@ -36,16 +36,53 @@ mortalityTable.ageShift = setClass(
 #' class.
 #'
 #' @param initial Age shift for the first birth year given in the \code{YOBs} vector
-#' @param YOBs    Vector of birth years in which the age shift changes by \code{step}. The last entry gives the first birth year that does not have any shift defined any more.
+#' @param YOBs    Vector of birth years in which the age shift changes by \code{step}.
+#' The last entry gives the first birth year that does not have any shift defined
+#' any more. If the first entry is \code{NA}, all earlier years get the initial
+#' age shift, if the last entry is \code{NA}, all later years get the final
+#' age-shift.
 #' @param step    How much the age shift changes in each year given in the \code{YOBs} vector
 #'
 #' @examples
 #' generateAgeShift(initial = 1, YOBs = c(1922, 1944, 1958, 1973, 1989, 2006, 2023, 2041, 2056))
+#' generateAgeShift(initial = 3, YOBs = c(NA, 1944, 1958, 1973, 1989, 2006, 2023, 2041, 2056))
+#' generateAgeShift(initial = 3, YOBs = c(NA, 1944, 1958, 1973, 1989, 2006, 2023, 2041, 2056, NA))
 #'
 #' @export
 generateAgeShift = function(initial = 0, YOBs = c(1900, 2100), step = -1) {
-    lns = diff(YOBs)
-    shifts = unlist(mapply(rep, initial + step * 0:(length(lns) - 1), lns, SIMPLIFY = TRUE))
-    data.frame(shifts = shifts, row.names = YOBs[1]:(utils::tail(YOBs, 1) - 1))
+    data.frame(
+        from = head(YOBs, -1),
+        to = YOBs[-1] - 1,
+        shifts = seq(initial, length.out = length(YOBs) - 1, by = step)
+    )
 }
+
+find.flights = function(v) {
+    vals = sort(v)
+    # Index of all values, where the next is not consecutive
+    non.consec = diff(vals) != 1
+    # Prepend TRUE so indicate the beginning, the rest is shifted by one index!
+    data.frame(
+        from = vals[c(TRUE, non.consec)],
+        to = vals[c(non.consec, TRUE)]
+    )
+}
+
+#' @export
+generateAgeShiftFromTable = function(shifts) {
+    if (!"YOB" %in% colnames(shifts) || !"shift" %in% colnames(shifts)) {
+        warning("generateAgeShiftFromTable expects a data frame with columns \"YOB\" and \"shift\". Data frame has columns: \"", paste(colnames(shifts), collapse = "\", \""), "\"")
+        return();
+    }
+    shifts = filter(shifts, !is.na(shift), !is.na(YOB)) %>%
+        select(YOB, shift)
+    shifts %>%
+        group_by(shift) %>%
+        do(find.flights(.$YOB)) %>%
+        select(from, to, shift) %>%
+        arrange(from)
+}
+
+
+# generateAgeShiftFromTable(avoe2005rAV.shift %>% mutate(shift = shiftM))
 
