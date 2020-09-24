@@ -1,0 +1,8 @@
+
+library(here)
+
+# AUSTRIA:
+source(here("data-raw", "AT", "Austria_Population2017_HMD_StatistikAustria_prepare.R"))
+source(here("data-raw", "AT", "create_MortalityTables_Austria_Population.R"))
+source(here("data-raw", "AT", "create_MortalityTables_Austria_Annuities.R"))
+

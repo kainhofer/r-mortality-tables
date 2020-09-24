@@ -51,7 +51,8 @@ censtable = function(file, table, sheet, baseYear = 1900, sex = "m", skip = 5, n
         table = paste("ÖVSt", table),
         sex = sex,
         collar = "Gesamtbevölkerung",
-        type = "Volkssterbetafel Österreich",
+        type = "Volkssterbetafel",
+        country = "Österreich",
         data = "official",
         year = baseYear
       )
@@ -194,7 +195,14 @@ obstable = function(data, sex = "m") {
     ages = as.integer(rownames(deathProbs)),
     years = as.integer(colnames(deathProbs)),
     data = list(
-      dim = list(table = "jährlich fortgeschriebene Sterbetafel Österreich", sex = sex, collar = "Gesamtbevölkerung", type = "Beobachtung", data = "official", year = "1947-2017")
+      dim = list(
+        table = "jährlich fortgeschriebene Sterbetafel",
+        sex = sex,
+        collar = "Gesamtbevölkerung",
+        type = "Beobachtung",
+        country = "Österreich",
+        data = "official",
+        year = "1947-2017")
     )
   )
 }
@@ -246,7 +254,14 @@ mort.AT.forecast.male = mortalityTable.observed(
   ages = as.numeric(rownames(AT.pop.fc.M)),
   years = as.numeric(colnames(AT.pop.fc.M)),
   data = list(
-    dim = list(table = "Bevölkerungsprognose Österreich (mittl. Szenario)", sex = "m", collar = "Gesamtbevölkerung", type = "Bevölkerungsprognose", data = "official", year = "2014-2080")
+    dim = list(
+      table = "Bevölkerungsprognose Österreich (mittl. Szenario)",
+      sex = "m",
+      collar = "Gesamtbevölkerung",
+      type = "Bevölkerungsprognose",
+      country = "Österreich",
+      data = "official",
+      year = "2014-2080")
   )
 )
 mort.AT.forecast.female = mortalityTable.observed(
@@ -256,7 +271,14 @@ mort.AT.forecast.female = mortalityTable.observed(
   ages = as.numeric(rownames(AT.pop.fc.F)),
   years = as.numeric(colnames(AT.pop.fc.F)),
   data = list(
-    dim = list(table = "Bevölkerungsprognose Österreich (mittl. Szenario)", sex = "w", collar = "Gesamtbevölkerung", type = "Bevölkerungsprognose", data = "official", year = "2014-2080")
+    dim = list(
+      table = "Bevölkerungsprognose Österreich (mittl. Szenario)",
+      sex = "w",
+      collar = "Gesamtbevölkerung",
+      type = "Bevölkerungsprognose",
+      country = "Österreich",
+      data = "official",
+      year = "2014-2080")
   )
 )
 mort.AT.forecast = array(
@@ -283,7 +305,14 @@ mort.AT.forecast.male.trend = mortalityTable.trendProjection(
   trend = lambda.forecast(AT.pop.fc.M),
   ages = as.numeric(rownames(AT.pop.fc.M)),
   data = list(
-    dim = list(table = "Bevölkerungsprognose Österreich (mittl. Szenario)", sex = ",", collar = "Gesamtbevölkerung", type = "Bevölkerungsprognose", data = "official", year = "2014-2080")
+    dim = list(
+      table = "Bevölkerungsprognose Österreich (mittl. Szenario)",
+      sex = "m",
+      collar = "Gesamtbevölkerung",
+      type = "Bevölkerungsprognose",
+      country = "Österreich",
+      data = "official",
+      year = "2014-2080")
   )
 )
 mort.AT.forecast.female.trend = mortalityTable.trendProjection(
@@ -293,7 +322,14 @@ mort.AT.forecast.female.trend = mortalityTable.trendProjection(
   trend = lambda.forecast(AT.pop.fc.F),
   ages = as.numeric(rownames(AT.pop.fc.F)),
   data = list(
-    dim = list(table = "Bevölkerungsprognose Österreich (mittl. Szenario)", sex = "w", collar = "Gesamtbevölkerung", type = "Bevölkerungsprognose", data = "official", year = "2014-2080")
+    dim = list(
+      table = "Bevölkerungsprognose Österreich (mittl. Szenario)",
+      sex = "w",
+      collar = "Gesamtbevölkerung",
+      type = "Bevölkerungsprognose",
+      country = "Österreich",
+      data = "official",
+      year = "2014-2080")
   )
 )
 
@@ -363,7 +399,14 @@ mort.AT.MCMC.load = function() {
     trend = whittaker(-data.array[,"Mann","beta"], lambda = lambda, d = d),
     dampingFunction = MCMC.trend.damping,
     data = list(
-      dim = list(sex = "m", collar = "Gesamtbevölkerung", type = "MCMC-Fit 1980-2017", data = "MCMC", year = "1980-2017", Tafel = "MCMC-Zerlegung Bevölkerungssterblichkeit")
+      dim = list(
+        sex = "m",
+        collar = "Gesamtbevölkerung",
+        type = "MCMC-Fit 1980-2017",
+        country = "Österreich",
+        data = "MCMC",
+        year = "1980-2017",
+        table = "MCMC-Zerlegung Bevölkerungssterblichkeit")
     )
   ) %>%
     mT.fitExtrapolationLaw(law = "HP2", method = "LF2", fit = 80:98, extrapolate = 90:120, fadeIn = 90:99) %>%
@@ -377,7 +420,14 @@ mort.AT.MCMC.load = function() {
     trend = whittaker(-data.array[,"Frau","beta"], lambda = lambda, d = d),
     dampingFunction = MCMC.trend.damping,
     data = list(
-      dim = list(sex = "w", collar = "Gesamtbevölkerung", type = "MCMC-Fit 1980-2017", data = "MCMC", year = "1980-2017", Tafel = "MCMC-Zerlegung Bevölkerungssterblichkeit")
+      dim = list(
+        sex = "w",
+        collar = "Gesamtbevölkerung",
+        type = "MCMC-Fit 1980-2017",
+        country = "Österreich",
+        data = "MCMC",
+        year = "1980-2017",
+        table = "MCMC-Zerlegung Bevölkerungssterblichkeit")
     )
   ) %>%
     mT.fitExtrapolationLaw(law = "HP2", method = "LF2", fit = 80:98, extrapolate = 90:120, fadeIn = 90:99) %>%
@@ -391,7 +441,14 @@ mort.AT.MCMC.load = function() {
     trend = whittaker(-data.array[,"Unisex","beta"], lambda = lambda, d = d),
     dampingFunction = MCMC.trend.damping,
     data = list(
-      dim = list(sex = "u", collar = "Gesamtbevölkerung", type = "MCMC-Fit 1980-2017", data = "MCMC", year = "1980-2017", Tafel = "MCMC-Zerlegung Bevölkerungssterblichkeit")
+      dim = list(
+        sex = "u",
+        collar = "Gesamtbevölkerung",
+        type = "MCMC-Fit 1980-2017",
+        country = "Österreich",
+        data = "MCMC",
+        year = "1980-2017",
+        table = "MCMC-Zerlegung Bevölkerungssterblichkeit")
     )
   ) %>%
     mT.fitExtrapolationLaw(law = "HP2", method = "LF2",fit = 80:98, extrapolate = 90:120, fadeIn = 90:99) %>%
