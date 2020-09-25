@@ -25,7 +25,7 @@ mortalityTable.ageShift = setClass(
         ageShifts = "data.frame"
     ),
     prototype = list(
-        ageShifts = data.frame(YOB = c(), shifts = c())
+        ageShifts = data.frame(from = c(), to = c(), shift = c())
     ),
     contains = "mortalityTable.period"
 )
@@ -53,7 +53,7 @@ generateAgeShift = function(initial = 0, YOBs = c(1900, 2100), step = -1) {
     data.frame(
         from = head(YOBs, -1),
         to = YOBs[-1] - 1,
-        shifts = seq(initial, length.out = length(YOBs) - 1, by = step)
+        shift = seq(initial, length.out = length(YOBs) - 1, by = step)
     )
 }
 
