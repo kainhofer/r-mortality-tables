@@ -9,7 +9,11 @@ generateAgeShift(initial = 0, YOBs = c(1900, 2100), step = -1)
 \arguments{
 \item{initial}{Age shift for the first birth year given in the \code{YOBs} vector}
 
-\item{YOBs}{Vector of birth years in which the age shift changes by \code{step}. The last entry gives the first birth year that does not have any shift defined any more.}
+\item{YOBs}{Vector of birth years in which the age shift changes by \code{step}.
+The last entry gives the first birth year that does not have any shift defined
+any more. If the first entry is \code{NA}, all earlier years get the initial
+age shift, if the last entry is \code{NA}, all later years get the final
+age-shift.}
 
 \item{step}{How much the age shift changes in each year given in the \code{YOBs} vector}
 }
@@ -19,5 +23,7 @@ class.
 }
 \examples{
 generateAgeShift(initial = 1, YOBs = c(1922, 1944, 1958, 1973, 1989, 2006, 2023, 2041, 2056))
+generateAgeShift(initial = 3, YOBs = c(NA, 1944, 1958, 1973, 1989, 2006, 2023, 2041, 2056))
+generateAgeShift(initial = 3, YOBs = c(NA, 1944, 1958, 1973, 1989, 2006, 2023, 2041, 2056, NA))
 
 }

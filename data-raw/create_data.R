@@ -6,3 +6,5 @@ source(here("data-raw", "AT", "Austria_Population2017_HMD_StatistikAustria_prepa
 source(here("data-raw", "AT", "create_MortalityTables_Austria_Population.R"))
 source(here("data-raw", "AT", "create_MortalityTables_Austria_Annuities.R"))
 
+source(here("data-raw", "DE", "create_MortalityTables_Germany_Annuities.R"))
+source(here("data-raw", "DE", "create_MortalityTables_Germany_MTPL.R"))

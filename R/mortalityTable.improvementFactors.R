@@ -7,7 +7,8 @@ setClassUnion("vectorOrMatrix", c("numeric", "matrix"))
 #' factors
 #'
 #' A cohort life table, obtained by an improvment factor projection
-#' from a given base table (PODs for a given observation year).
+#' from a given base table (PODs for a given observation year). The yearly
+#' improvement factors are often (in particular in the US) called "scale".
 #'
 #' @slot baseYear    The base year for the improvements (\code{baseTable}
 #'                   describes the death probabilities in this year)

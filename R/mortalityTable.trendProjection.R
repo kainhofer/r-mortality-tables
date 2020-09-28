@@ -8,8 +8,8 @@ NULL
 #' the Lee-Carter method or some other trend estimation.
 #' The dampingFunction can be used to modify the cumulative years (e.g. G(tau+x)
 #' instead of tau+x)
-#' If trend2 is given, the G(tau+x) gives the weight of the first trend,
-#' 1-G(tau+x) the weight of the second trend
+#' If trend2 is given, the G(tau+x) gives the weight of the second trend,
+#' 1-G(tau+x) the weight of the first trend, i.e.
 #'
 #' @slot baseYear The base year of the trend projection (\code{baseTable}
 #'                describes the death probabilities in this year)
@@ -20,7 +20,8 @@ NULL
 #' @slot trend2   The alternate trend. If given, the damping function
 #'                interpolates between \code{trend} and \code{trend2}, otherwise
 #'                the dumping function simply modifies the coefficients of
-#'                \code{trend}.
+#'                \code{trend}. Dampingfunction 1 means 100% are removed from trend
+#'                and instead trend2 is used.
 #'
 #' @examples
 #' obsTable = mortalityTable.trendProjection(
