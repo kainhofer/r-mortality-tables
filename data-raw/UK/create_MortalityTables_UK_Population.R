@@ -85,7 +85,7 @@ censtable = function(data, area = "UK", sex = "male") {
       )
     )
   )
-  mort.UK.national[[area, sx]] = tbl
+  mort.UK.national[[area, sx]] <<- tbl
   tbl
 }
 
@@ -127,7 +127,6 @@ save(
 
   file = ukfile.out
 )
-
 
 
 
