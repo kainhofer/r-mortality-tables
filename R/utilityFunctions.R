@@ -779,6 +779,12 @@ setMethod("mT.round", "pensionTable",
               object
           })
 
+#' @describeIn mT.round Empty dummy function that simply returns NULL
+setMethod("mT.round", "NULL",
+          function(object, digits = 8) {
+              NULL
+          })
+
 
 
 #' Remove all non-essential data (raw data, etc.) from a mortalityTable object
@@ -852,6 +858,12 @@ setMethod("mT.cleanup", "array",
 setMethod("mT.cleanup", "list",
           function(object) {
               lapply(object, mT.cleanup)
+          })
+
+#' @describeIn mT.cleanup Empty dummy function to handle unassigned variables
+setMethod("mT.cleanup", "NULL",
+          function(object) {
+              NULL
           })
 
 #' @describeIn mT.cleanup Clean up and remove all non-essential data from the mortalityTable objects stored in the array

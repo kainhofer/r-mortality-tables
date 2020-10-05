@@ -23,3 +23,10 @@ setMethod("undampenTrend", "mortalityTable.trendProjection",
               object@dampingFunction = identity;
               object
           })
+
+#' @describeIn undampenTrend Empty dummy function to handle unassigned variables
+setMethod("undampenTrend", "NULL",
+          function(object) {
+              NULL
+          })
+
