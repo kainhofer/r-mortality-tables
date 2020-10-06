@@ -162,6 +162,7 @@ save(
 
 DAV2004Rfile = here::here("data-raw", "DE", "Annuities", "DAV_2004_R.xls")
 DAV2004Rfile.out = here::here("data", "DAV2004R.RData")
+DAV2004Rfile.av.out = here::here("data", "DAV2004R.av.RData")
 
 
 ### Yearly weights of the trend => We need the cumulated weights of trend 1/2!
@@ -490,19 +491,30 @@ DAV2004R[["w", "B20", "Selektion"]] = DAV2004R.female.B20.selekt
 
 
 
+save(
+  DAV2004R,
+  DAV2004R.male,
+  DAV2004R.female,
+  DAV2004R.male.selekt,
+  DAV2004R.female.selekt,
 
+  DAV2004R.male.2Ord,
+  DAV2004R.female.2Ord,
+  DAV2004R.male.2Ord.selekt,
+  DAV2004R.female.2Ord.selekt,
 
+  DAV2004R.male.Bestand,
+  DAV2004R.female.Bestand,
+  DAV2004R.male.Bestand.selekt,
+  DAV2004R.female.Bestand.selekt,
 
-# expand.grid(list(Geschlecht = c("m", "w"), Tafel = c("1. Ordnung", "Bestand", "B20", "2. Ordnung"), Typ = c("Aggregat", "Selektion")), )
-# "m", "Bestand",    "Aggregat"
-# "w", "Bestand",    "Aggregat"
-# "m", "Bestand",    "Selektion"
-# "w", "Bestand",    "Selektion"
-# "m", "B20",        "Aggregat"
-# "w", "B20",        "Aggregat"
-# "m", "B20",        "Selektion"
-# "w", "B20",        "Selektion"
+  DAV2004R.male.B20,
+  DAV2004R.female.B20,
+  DAV2004R.male.B20.selekt,
+  DAV2004R.female.B20.selekt,
 
+  file = DAV2004Rfile.out
+)
 
 
 
@@ -615,7 +627,7 @@ DAV2004R.av[["w", "Bestand"]] = DAV2004R.female.Bestand.av
 
 
 #---------------------------------------------------------------------#
-# Tafeln mit AV: B2-                                               ####
+# Tafeln mit AV: B20                                               ####
 #---------------------------------------------------------------------#
 
 DAV2004R.male.B20.av = mortalityTable.ageShift(
@@ -645,39 +657,15 @@ DAV2004R.av[["m", "B20"]] = DAV2004R.male.B20.av
 DAV2004R.av[["w", "B20"]] = DAV2004R.female.B20.av
 
 
+save(
+  DAV2004R.av,
+  DAV2004R.male.av,
+  DAV2004R.female.av,
+  DAV2004R.male.Bestand.av,
+  DAV2004R.female.Bestand.av,
+  DAV2004R.male.B20.av,
+  DAV2004R.female.B20.av,
 
-
-
-Beginn = 1999
-Eintrittsalter = 60
-ages = Eintrittsalter:121
-Aufschubdauer = 0
-YOB = Beginn - Eintrittsalter
-
-data.frame(
-  x = ages,
-  t = YOB + ages,
-  Sel2O = deathProbabilities(DAV2004R[["m","2. Ordnung","Selektion"]], YOB = YOB, ages = ages),
-  Agg2O = deathProbabilities(DAV2004R[["m","2. Ordnung","Aggregat"]], YOB = YOB, ages = ages),
-
-  SelBestand = deathProbabilities(DAV2004R[["m","Bestand","Selektion"]], YOB = YOB, ages = ages),
-  AggBestand = deathProbabilities(DAV2004R[["m","Bestand","Aggregat"]], YOB = YOB, ages = ages),
-  AVBestand = deathProbabilities(DAV2004R.av[["m","Bestand"]], YOB = YOB, ages = ages),
-
-  SelB20 = deathProbabilities(DAV2004R[["m","B20","Selektion"]], YOB = YOB, ages = ages),
-  AggB20 = deathProbabilities(DAV2004R[["m","B20","Aggregat"]], YOB = YOB, ages = ages),
-  AVB20 = deathProbabilities(DAV2004R.av[["m","B20"]], YOB = YOB, ages = ages),
-
-  Sel1Ord = deathProbabilities(DAV2004R[["m","1. Ordnung","Selektion"]], YOB = YOB, ages = ages),
-  Agg1Ord = deathProbabilities(DAV2004R[["m","1. Ordnung","Aggregat"]], YOB = YOB, ages = ages),
-  AV1Ord = deathProbabilities(DAV2004R.av[["m","1. Ordnung"]], YOB = YOB, ages = ages)
-
-) %>% write.xlsx(file = paste0("DAV2004R_Examples_", YOB, "_Eintritt", Eintrittsalter, "_Aufschub", Aufschubdauer, ".NEW.xlsx"))
-deathProbabilities(DAV2004R[["m",1,1]], YOB = YOB)
-
-
-
-
-
-
+  file = DAV2004Rfile.av.out
+)
 
