@@ -22,7 +22,7 @@ setGeneric("periodDeathProbabilities", function(object, ..., ages = NULL, Period
 setMethod("periodDeathProbabilities", "mortalityTable.period",
           function(object, ..., ages = NULL, Period = 1975) {
               fillAges(
-                  object@modification(object@deathProbs * (1 + object@loading)),
+                  object@modification(baseProbabilities(object, ...) * (1 + object@loading)),
                   givenAges = ages(object),
                   neededAges = ages)
           })
@@ -32,7 +32,7 @@ setMethod("periodDeathProbabilities", "mortalityTable.period",
 setMethod("periodDeathProbabilities", "mortalityTable.ageShift",
           function (object,  ..., ages = NULL, Period = 1975) {
               # TODO
-              qx = object@deathProbs * (1 + object@loading);
+              qx = baseProbabilities(object, ...) * (1 + object@loading);
               # TODO!!!
               # shift.index = match(YOB, object@shifts, 0);
               # if (shift.index) {}
@@ -46,7 +46,7 @@ setMethod("periodDeathProbabilities", "mortalityTable.ageShift",
 #'             of the life table for a given observation year
 setMethod("periodDeathProbabilities", "mortalityTable.trendProjection",
           function(object,  ..., ages = NULL, Period = 1975) {
-              qx = object@deathProbs * (1 + object@loading);
+              qx = baseProbabilities(object, ...) * (1 + object@loading);
               if (is.null(object@trend2) || length(object@trend2) <= 1) {
                   # ages = 0:(length(qx)-1);
                   damping = object@dampingFunction(Period - object@baseYear);
@@ -68,7 +68,7 @@ setMethod("periodDeathProbabilities", "mortalityTable.trendProjection",
 #'             of the life table for a given observation year
 setMethod("periodDeathProbabilities", "mortalityTable.improvementFactors",
           function(object, ..., ages = NULL, Period = 1975) {
-              qx = object@deathProbs * (1 + object@loading);
+              qx = baseProbabilities(object, ...) * (1 + object@loading);
               impr = calculateImprovements(object, ..., Period = Period)
               fillAges(
                   object@modification(qx * impr),

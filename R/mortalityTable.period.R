@@ -2,6 +2,8 @@
 NULL
 
 setClassUnion("numericOrNULL", c("numeric", "NULL"))
+setClassUnion("mortalityTableOrNULL", c("mortalityTable", "NULL"))
+
 
 
 #' Class mortalityTable.period - Period life tables
@@ -42,12 +44,16 @@ mortalityTable.period = setClass(
     slots = list(
         ages = "numeric",
         deathProbs = "numeric",
-        exposures = "numericOrNULL"
+        exposures = "numericOrNULL",
+        selectionFactors = "numericOrNULL",
+        tableBeforeSelection = "mortalityTableOrNULL"
     ),
     prototype = list(
         ages = eval(0:120),
         deathProbs = rep(1,120),
-        exposures = NULL
+        exposures = NULL,
+        selectionFactors = NULL,
+        tableBeforeSelection = NULL
     ),
     contains = "mortalityTable"
 )

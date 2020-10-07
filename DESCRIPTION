@@ -40,13 +40,14 @@ Collate:
     'mortalityTable.joined.R'
     'mortalityTable.mixed.R'
     'ages.R'
-    'baseTable.R'
-    'baseYear.R'
     'fillAges.R'
-    'pensionTable.R'
-    'commutationNumbers.R'
     'mortalityTable.improvementFactors.R'
     'mortalityTable.trendProjection.R'
+    'baseProbabilities.R'
+    'baseTable.R'
+    'baseYear.R'
+    'pensionTable.R'
+    'commutationNumbers.R'
     'deathProbabilities.R'
     'getCohortTable.R'
     'getOmega.R'
@@ -73,3 +74,4 @@ Collate:
     'undampenTrend.R'
     'whittaker.mortalityTable.R'
 VignetteBuilder: knitr
+LazyData: TRUE

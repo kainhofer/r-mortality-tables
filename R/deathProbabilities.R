@@ -21,7 +21,7 @@ setGeneric("deathProbabilities", function(object, ..., ages = NULL, YOB = 1975) 
 setMethod("deathProbabilities", "mortalityTable.period",
           function(object, ..., ages = NULL, YOB = 1975) {
               fillAges(
-                  object@modification(object@deathProbs * (1 + object@loading)),
+                  object@modification(baseProbabilities(object, ...) * (1 + object@loading)),
                   givenAges = ages(object),
                   neededAges = ages
               );
@@ -31,7 +31,7 @@ setMethod("deathProbabilities", "mortalityTable.period",
 #'                                life table given the birth year (if needed)
 setMethod("deathProbabilities","mortalityTable.ageShift",
           function(object,  ..., ages = NULL, YOB = 1975) {
-              qx = object@deathProbs * (1 + object@loading);
+              qx = baseProbabilities(object, ...) * (1 + object@loading);
               shift = ageShift(object, YOB);
               if (shift > 0) {
                   qx = c(qx[(shift + 1):length(qx)], rep(qx[length(qx)], shift));
@@ -45,9 +45,9 @@ setMethod("deathProbabilities","mortalityTable.ageShift",
 #'                                life table given the birth year (if needed)
 setMethod("deathProbabilities","mortalityTable.trendProjection",
           function(object,  ..., ages = NULL, YOB = 1975) {
-              qx = object@deathProbs * (1 + object@loading);
+              qx = baseProbabilities(object, ...) * (1 + object@loading);
+              givenAges = ages(object)
               if (is.null(object@trend2) || length(object@trend2) <= 1) {
-                  givenAges = object@ages;
                   damping = sapply(
                       givenAges,
                       function(age) { object@dampingFunction(YOB + age - object@baseYear) }
@@ -69,7 +69,7 @@ setMethod("deathProbabilities","mortalityTable.trendProjection",
 #'                                life table given the birth year (if needed)
 setMethod("deathProbabilities","mortalityTable.improvementFactors",
           function(object,  ..., ages = NULL, YOB = 1975) {
-              qx = object@deathProbs * (1 + object@loading);
+              qx = baseProbabilities(object, ...) * (1 + object@loading);
               impr = calculateImprovements(object, ..., YOB = YOB)
               fillAges(
                   object@modification(impr * qx),
@@ -87,3 +87,4 @@ setMethod("deathProbabilities","mortalityTable.mixed",
               # We already have the correct ages from the deathProbabilities call above
               object@modification(mixedqx)
           })
+

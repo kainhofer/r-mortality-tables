@@ -74,15 +74,14 @@ generateAgeShiftFromTable = function(shifts) {
         warning("generateAgeShiftFromTable expects a data frame with columns \"YOB\" and \"shift\". Data frame has columns: \"", paste(colnames(shifts), collapse = "\", \""), "\"")
         return();
     }
-    shifts = filter(shifts, !is.na(shift), !is.na(YOB)) %>%
-        select(YOB, shift)
+    shifts = dplyr::filter(shifts, !is.na(shift), !is.na(YOB)) %>%
+        dplyr::select(YOB, shift)
     shifts %>%
-        group_by(shift) %>%
+        dplyr::group_by(shift) %>%
         do(find.flights(.$YOB)) %>%
-        select(from, to, shift) %>%
-        arrange(from)
+        dplyr::select(from, to, shift) %>%
+        dplyr::arrange(from)
 }
 
 
-# generateAgeShiftFromTable(avoe2005rAV.shift %>% mutate(shift = shiftM))
 
