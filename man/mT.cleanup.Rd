@@ -7,6 +7,7 @@
 \alias{mT.cleanup,mortalityTable.trendProjection-method}
 \alias{mT.cleanup,array-method}
 \alias{mT.cleanup,list-method}
+\alias{mT.cleanup,NULL-method}
 \alias{mT.cleanup,pensionTable-method}
 \alias{mT.cleanup,mortalityTable.observed-method}
 \title{Remove all non-essential data (raw data, etc.) from a mortalityTable object}
@@ -22,6 +23,8 @@ mT.cleanup(object)
 \S4method{mT.cleanup}{array}(object)
 
 \S4method{mT.cleanup}{list}(object)
+
+\S4method{mT.cleanup}{`NULL`}(object)
 
 \S4method{mT.cleanup}{pensionTable}(object)
 
@@ -60,6 +63,8 @@ or mixed tables), all components are cleaned.
 \item \code{array}: Clean up and remove all non-essential data from the mortalityTable objects stored in the array
 
 \item \code{list}: Clean up and remove all non-essential data from the mortalityTable objects stored in the list
+
+\item \code{NULL}: Empty dummy function to handle unassigned variables
 
 \item \code{pensionTable}: Clean up and remove all non-essential data from the mortalityTable objects stored in the array
 

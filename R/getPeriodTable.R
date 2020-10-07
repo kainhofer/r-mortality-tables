@@ -34,3 +34,26 @@ setMethod("getPeriodTable","mortalityTable",
                   deathProbs = periodDeathProbabilities(object, Period = Period, ...)
               )
           })
+
+
+#' @describeIn getPeriodTable Return the period life table as a
+#'             \code{mortalityTable.period} object from the mortalityTable objects stored in the array
+setMethod("getPeriodTable", "array",
+          function(object,  ...) {
+              array(
+                  lapply(object, getPeriodTable,  ...),
+                  dim = dim(object), dimnames = dimnames(object))
+          })
+#' @describeIn getPeriodTable  Return the period life table as a
+#'             \code{mortalityTable.period} object from the mortalityTable objects stored in the list
+setMethod("getPeriodTable", "list",
+          function(object,  ...) {
+              lapply(object, getPeriodTable, ...)
+          })
+
+#' @describeIn getPeriodTable Empty dummy function to handle unassigned variables
+setMethod("getPeriodTable", "NULL",
+          function(object,  ...) {
+              NULL
+          })
+

@@ -27,3 +27,25 @@ setMethod("getCohortTable","mortalityTable",
                   deathProbs = deathProbabilities(object, YOB = YOB, ...)
               );
           })
+
+
+#' @describeIn getCohortTable Return the cohort life table as a
+#'             \code{mortalityTable.period} object from the mortalityTable objects stored in the array
+setMethod("getCohortTable", "array",
+          function(object,  ...) {
+              array(
+                  lapply(object, getCohortTable,  ...),
+                  dim = dim(object), dimnames = dimnames(object))
+          })
+#' @describeIn getCohortTable  Return the cohort life table as a
+#'             \code{mortalityTable.period} object from the mortalityTable objects stored in the list
+setMethod("getCohortTable", "list",
+          function(object,  ...) {
+              lapply(object, getCohortTable, ...)
+          })
+
+#' @describeIn getCohortTable Empty dummy function to handle unassigned variables
+setMethod("getCohortTable", "NULL",
+          function(object,  ...) {
+              NULL
+          })

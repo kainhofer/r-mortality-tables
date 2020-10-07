@@ -9,6 +9,7 @@
 \alias{mT.round,array-method}
 \alias{mT.round,list-method}
 \alias{mT.round,pensionTable-method}
+\alias{mT.round,NULL-method}
 \alias{mT.round,mortalityTable.observed-method}
 \title{Round all components of a mortality table to the given number of digits}
 \usage{
@@ -27,6 +28,8 @@ mT.round(object, digits = 8)
 \S4method{mT.round}{list}(object, digits = 8)
 
 \S4method{mT.round}{pensionTable}(object, digits = 8)
+
+\S4method{mT.round}{`NULL`}(object, digits = 8)
 
 \S4method{mT.round}{mortalityTable.observed}(object, digits = 8)
 }
@@ -55,6 +58,8 @@ numerical digits. For pensionTable objects, the function is applied to all compo
 \item \code{list}: Round the mortalityTables stored in a list to a given number of digits
 
 \item \code{pensionTable}: Round all components of a pensionTable to a given number of digits
+
+\item \code{NULL}: Empty dummy function that simply returns NULL
 
 \item \code{mortalityTable.observed}: Return the life table with the values rounded to the given number of digits
 }}

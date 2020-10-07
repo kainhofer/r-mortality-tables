@@ -27,3 +27,23 @@ setMethod("lifeTable","mortalityTable",
               }
               lifecontingencies::probs2lifetable(qx, type = "qx")
           })
+
+#' @describeIn lifeTable Return the lifetable object (package lifecontingencies) from the mortalityTable objects stored in the array
+setMethod("lifeTable", "array",
+          function(object,  ...) {
+              array(
+                  lapply(object, lifeTable,  ...),
+                  dim = dim(object), dimnames = dimnames(object))
+          })
+#' @describeIn lifeTable Return the lifetable object (package lifecontingencies)  from the mortalityTable objects stored in the list
+setMethod("lifeTable", "list",
+          function(object,  ...) {
+              lapply(object, lifeTable, ...)
+          })
+
+#' @describeIn lifeTable Empty dummy function to handle unassigned variables
+setMethod("lifeTable", "NULL",
+          function(object,  ...) {
+              NULL
+          })
+

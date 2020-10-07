@@ -3,11 +3,20 @@
 \name{getPeriodTable}
 \alias{getPeriodTable}
 \alias{getPeriodTable,mortalityTable-method}
+\alias{getPeriodTable,array-method}
+\alias{getPeriodTable,list-method}
+\alias{getPeriodTable,NULL-method}
 \title{Return the period life table as a \code{mortalityTable.period} object}
 \usage{
 getPeriodTable(object, Period, ...)
 
 \S4method{getPeriodTable}{mortalityTable}(object, Period, ...)
+
+\S4method{getPeriodTable}{array}(object, Period, ...)
+
+\S4method{getPeriodTable}{list}(object, Period, ...)
+
+\S4method{getPeriodTable}{`NULL`}(object, Period, ...)
 }
 \arguments{
 \item{object}{The life table object (class inherited from mortalityTable)}
@@ -24,6 +33,14 @@ Return the period life table as a \code{mortalityTable.period} object
 \itemize{
 \item \code{mortalityTable}: Return the period life table as a
 \code{mortalityTable.period} object
+
+\item \code{array}: Return the period life table as a
+\code{mortalityTable.period} object from the mortalityTable objects stored in the array
+
+\item \code{list}: Return the period life table as a
+\code{mortalityTable.period} object from the mortalityTable objects stored in the list
+
+\item \code{NULL}: Empty dummy function to handle unassigned variables
 }}
 
 \examples{

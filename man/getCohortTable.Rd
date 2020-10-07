@@ -3,11 +3,20 @@
 \name{getCohortTable}
 \alias{getCohortTable}
 \alias{getCohortTable,mortalityTable-method}
+\alias{getCohortTable,array-method}
+\alias{getCohortTable,list-method}
+\alias{getCohortTable,NULL-method}
 \title{Return the cohort life table as a \code{mortalityTable.period} object}
 \usage{
 getCohortTable(object, YOB, ...)
 
 \S4method{getCohortTable}{mortalityTable}(object, YOB, ...)
+
+\S4method{getCohortTable}{array}(object, YOB, ...)
+
+\S4method{getCohortTable}{list}(object, YOB, ...)
+
+\S4method{getCohortTable}{`NULL`}(object, YOB, ...)
 }
 \arguments{
 \item{object}{The life table object (class inherited from mortalityTable)}
@@ -23,6 +32,14 @@ Return the cohort life table as a \code{mortalityTable.period} object
 \itemize{
 \item \code{mortalityTable}: Return the cohort life table as a
 \code{mortalityTable.period} object
+
+\item \code{array}: Return the cohort life table as a
+\code{mortalityTable.period} object from the mortalityTable objects stored in the array
+
+\item \code{list}: Return the cohort life table as a
+\code{mortalityTable.period} object from the mortalityTable objects stored in the list
+
+\item \code{NULL}: Empty dummy function to handle unassigned variables
 }}
 
 \examples{

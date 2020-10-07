@@ -11,8 +11,8 @@ A cohort mortality table, obtained by a trend projection from a given base table
 the Lee-Carter method or some other trend estimation.
 The dampingFunction can be used to modify the cumulative years (e.g. G(tau+x)
 instead of tau+x)
-If trend2 is given, the G(tau+x) gives the weight of the first trend,
-1-G(tau+x) the weight of the second trend
+If trend2 is given, the G(tau+x) gives the weight of the second trend,
+1-G(tau+x) the weight of the first trend, i.e.
 }
 \section{Slots}{
 
@@ -29,7 +29,8 @@ from the baseYear and should return the dampened values.}
 \item{\code{trend2}}{The alternate trend. If given, the damping function
 interpolates between \code{trend} and \code{trend2}, otherwise
 the dumping function simply modifies the coefficients of
-\code{trend}.}
+\code{trend}. Dampingfunction 1 means 100% are removed from trend
+and instead trend2 is used.}
 }}
 
 \examples{

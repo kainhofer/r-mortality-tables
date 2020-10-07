@@ -3,11 +3,14 @@
 \name{undampenTrend}
 \alias{undampenTrend}
 \alias{undampenTrend,mortalityTable.trendProjection-method}
+\alias{undampenTrend,NULL-method}
 \title{Return a \code{mortalityTable.trendProjection} object with the trend damping removed.}
 \usage{
 undampenTrend(object)
 
 \S4method{undampenTrend}{mortalityTable.trendProjection}(object)
+
+\S4method{undampenTrend}{`NULL`}(object)
 }
 \arguments{
 \item{object}{The life table object (class inherited from mortalityTable)}
@@ -19,6 +22,8 @@ Return a \code{mortalityTable.trendProjection} object with the trend damping rem
 \itemize{
 \item \code{mortalityTable.trendProjection}: Return a \code{mortalityTable.trendProjection}
 object with the trend damping removed.
+
+\item \code{NULL}: Empty dummy function to handle unassigned variables
 }}
 
 \examples{
