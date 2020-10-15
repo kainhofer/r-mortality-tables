@@ -16,6 +16,7 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
+  cache = TRUE,
   collapse = TRUE,
   comment = "#>"
 )
@@ -608,6 +609,35 @@ plotMortalityTables(
 ) + facet_grid(sex ~ .)
 ``` 
 
+
+## Mortality Tables for Compulsory Private Health Insurance (PKV)
+
+Period mortality tables for compulsory private health care insurance in Germany. The mortality tables are created annually by the PKV-Verband and published by the authorities (BaFin).
+
+* PKV Sterbetafel 2004
+* PKV Sterbetafel 2007
+* PKV Sterbetafel 2008
+* PKV Sterbetafel 2009
+* PKV Sterbetafel 2010
+* PKV Sterbetafel 2011
+* PKV Sterbetafel 2012
+* PKV Sterbetafel 2013
+* PKV Sterbetafel 2014
+* PKV Sterbetafel 2015
+* PKV Sterbetafel 2016
+* PKV Sterbetafel 2017
+* PKV Sterbetafel 2018
+* PKV Sterbetafel 2019
+* PKV Sterbetafel 2020
+* PKV Sterbetafel 2021
+
+Source: BaFin, https://www.bafin.de/SharedDocs/Downloads/DE/Statistik/PKV/dl_st_2021_pkv_sterbetafel_va.html, https://www.bafin.de/SiteGlobals/Forms/Suche/Expertensuche_Formular.html?templateQueryString=PKV+Sterbetafel
+Source: PKV Verband, https://www.pkv.de/service/zahlen-und-fakten/pflichtveroeffentlichungen/
+
+
+```{r PKVTables}
+plotMortalityTables(PKVSterbetafel, aes = aes(color = table), legend.position = "right") + facet_grid(sex~.)
+```
 
 ## Occupational Disability
 
