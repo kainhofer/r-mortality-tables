@@ -8,7 +8,11 @@ source(here("data-raw", "AT", "create_MortalityTables_Austria_Population.R"))
 source(here("data-raw", "AT", "create_MortalityTables_Austria_Annuities.R"))
 
 source(here("data-raw", "DE", "create_MortalityTables_Germany_Annuities.R"))
+source(here("data-raw", "DE", "create_MortalityTables_Germany_DeathRisk.R"))
 source(here("data-raw", "DE", "create_MortalityTables_Germany_MTPL.R"))
 source(here("data-raw", "DE", "create_MortalityTables_Germany_PKV.R"))
 
 source(here("data-raw", "UK", "create_MortalityTables_UK_Population.R"))
+
+source(here("data-raw", "US", "create_MortalityTables_US_AccidentalDeath.R"))
+source(here("data-raw", "US", "create_MortalityTables_US_Basic.R"))

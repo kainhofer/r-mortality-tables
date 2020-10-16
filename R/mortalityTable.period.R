@@ -1,6 +1,8 @@
 #' @include mortalityTable.R
 NULL
 
+setClassUnion("numericArray", c("numeric", "array", "matrix"))
+setClassUnion("numericArrayOrNULL", c("numeric", "array", "matrix", "NULL"))
 setClassUnion("numericOrNULL", c("numeric", "NULL"))
 setClassUnion("mortalityTableOrNULL", c("mortalityTable", "NULL"))
 
@@ -43,8 +45,8 @@ mortalityTable.period = setClass(
     "mortalityTable.period",
     slots = list(
         ages = "numeric",
-        deathProbs = "numeric",
-        exposures = "numericOrNULL",
+        deathProbs = "numericArray",
+        exposures = "numericArrayOrNULL",
         selectionFactors = "numericOrNULL",
         tableBeforeSelection = "mortalityTableOrNULL"
     ),
