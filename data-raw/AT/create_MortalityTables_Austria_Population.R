@@ -58,7 +58,7 @@ censtable = function(file, table, sheet, baseYear = 1900, sex = "m", skip = 5, n
       )
     )
   )
-  mort.AT.census[[sex, table]] = tbl
+  mort.AT.census[[sex, table]] <<- tbl
   tbl
 }
 

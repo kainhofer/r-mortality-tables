@@ -4,6 +4,7 @@
 library(MortalityTables)
 library(here)
 library(readxl)
+library(dplyr)
 
 
 
@@ -166,16 +167,6 @@ DAV2004Rfile.av.out = here::here("data", "DAV2004R.av.RData")
 
 
 ### Yearly weights of the trend => We need the cumulated weights of trend 1/2!
-# DAV2004R.trend.switching = function(T1 = 5, T2 = 10) {
-#   function(year) {
-#     if (year <= 1999 + T1) {
-#       1
-#     } else if (year <= 1999 + T2) {
-#       1 - (year - 1999 - T1) / (T2 - T1)
-#     } else
-#       0
-#   }
-# }
 DAV2004R.trend.switching = function(T1 = 5, T2 = 10) {
   function(year) {
     if (year <= 1999 + T1) {
@@ -214,27 +205,14 @@ DAV2004r.data = full_join(
 DAV2004r.data.Selection = readxl::read_excel(DAV2004Rfile, sheet = "Selektionsfaktoren", skip = 1, col_types = c("skip", "guess", "guess"), col_names = c("year", "SelectMale", "SelectFemale"))
 DAV2004r.data.Selection[2:5,] = DAV2004r.data.Selection[2,]
 
-
-
 ############################################################################## #
 
 DAV2004R = array(
   data = c(mortalityTable.NA),
-  # data = c(NA),
   dim = c(2, 4, 2),
   dimnames = list(Geschlecht = c("m", "w"), Tafel = c("1. Ordnung", "Bestand", "B20", "2. Ordnung"), Typ = c("Aggregat", "Selektion"))
 )
 DAV2004R[,,] = NA
-
-# expand.grid(list(Geschlecht = c("m", "w"), Tafel = c("1. Ordnung", "Bestand", "B20", "2. Ordnung"), Typ = c("Aggregat", "Selektion")), )
-# "m", "Bestand",    "Aggregat"
-# "w", "Bestand",    "Aggregat"
-# "m", "Bestand",    "Selektion"
-# "w", "Bestand",    "Selektion"
-# "m", "B20",        "Aggregat"
-# "w", "B20",        "Aggregat"
-# "m", "B20",        "Selektion"
-# "w", "B20",        "Selektion"
 
 
 
@@ -270,8 +248,8 @@ DAV2004R.male.selekt = mortalityTable.trendProjection(
   baseYear = 1999,
   deathProbs = DAV2004r.data$`qx Sel 1.Ord`,
   trend = DAV2004r.data$`trendM 1.Ord`,
-  # selection = DAV2004r.data.Selection$SelectMale,
-  # TODO: Add deathProbs before begin of selection effects
+  selectionFactors = DAV2004r.data.Selection$SelectMale,
+  tableBeforeSelection = DAV2004R.male,
   data = list(
     dim = list(table = "DAV 2004 R", sex = "m", collar = "Selekt", type = "Rententafel", country = "Deutschland", data = "loaded", year = 1999)
   )
@@ -283,8 +261,8 @@ DAV2004R.female.selekt = mortalityTable.trendProjection(
   baseYear = 1999,
   deathProbs = DAV2004r.data$`qy Sel 1.Ord`,
   trend = DAV2004r.data$`trendF 1.Ord`,
-  # selection = DAV2004r.data.Selection$SelectFemale,
-  # TODO: Add deathProbs before begin of selection effects
+  selectionFactors = DAV2004r.data.Selection$SelectFemale,
+  tableBeforeSelection = DAV2004R.female,
   data = list(
     dim = list(table = "DAV 2004 R", sex = "w", collar = "Selekt", type = "Rententafel", country = "Deutschland", data = "loaded", year = 1999)
   )
@@ -312,9 +290,6 @@ DAV2004R.male.2Ord = mortalityTable.trendProjection(
     dim = list(table = "DAV 2004 R 2. Ordnung", sex = "m", collar = "Aggregat", type = "Rententafel", country = "Deutschland", data = "unloaded", year = 1999)
   )
 )
-# deathProbabilities(DAV2004R.male.2Ord, YOB = 1939, ages = 60:121)
-# Vectorize(DAV2004R.trend.switching(T1 = 5, T2 = 10))(1999:2020)
-
 
 DAV2004R.female.2Ord = mortalityTable.trendProjection(
   name = "DAV 2004R Frauen 2.Ordnung, Aggregat",
@@ -337,8 +312,8 @@ DAV2004R.male.2Ord.selekt = mortalityTable.trendProjection(
   trend = DAV2004r.data$`trendM Ziel 2.Ord`,
   trend2 = DAV2004r.data$`trendM Start 2.Ord`,
   dampingFunction = DAV2004R.trend.switching(T1 = 5, T2 = 10),
-  # selection = DAV2004r.data.Selection$SelectMale,
-  # TODO: Add deathProbs before begin of selection effects
+  selectionFactors = DAV2004r.data.Selection$SelectMale,
+  tableBeforeSelection = DAV2004R.male.2Ord,
   data = list(
     dim = list(table = "DAV 2004 R 2. Ordnung", sex = "m", collar = "Selekt", type = "Rententafel", country = "Deutschland", data = "unloaded", year = 1999)
   )
@@ -352,8 +327,8 @@ DAV2004R.female.2Ord.selekt = mortalityTable.trendProjection(
   trend = DAV2004r.data$`trendF Ziel 2.Ord`,
   trend2 = DAV2004r.data$`trendF Start 2.Ord`,
   dampingFunction = DAV2004R.trend.switching(T1 = 5, T2 = 10),
-  # selection = DAV2004r.data.Selection$SelectFemale,
-  # TODO: Add deathProbs before begin of selection effects
+  selectionFactors = DAV2004r.data.Selection$SelectFemale,
+  tableBeforeSelection = DAV2004R.female.2Ord,
   data = list(
     dim = list(table = "DAV 2004 R 2. Ordnung", sex = "w", collar = "Selekt", type = "Rententafel", country = "Deutschland", data = "unloaded", year = 1999)
   )
@@ -404,8 +379,8 @@ DAV2004R.male.Bestand.selekt = mortalityTable.trendProjection(
   trend = DAV2004r.data$`trendM Ziel Bestand`,
   trend2 = DAV2004r.data$`trendM Start Bestand`,
   dampingFunction = DAV2004R.trend.switching(T1 = 5, T2 = 10),
-  # selection = DAV2004r.data.Selection$SelectMale,
-  # TODO: Add deathProbs before begin of selection effects
+  selectionFactors = DAV2004r.data.Selection$SelectMale,
+  tableBeforeSelection = DAV2004R.male.Bestand,
   data = list(
     dim = list(table = "DAV 2004 R Bestand", sex = "m", collar = "Selekt", type = "Rententafel", country = "Deutschland", data = "loaded", year = 1999)
   )
@@ -419,8 +394,8 @@ DAV2004R.female.Bestand.selekt = mortalityTable.trendProjection(
   trend = DAV2004r.data$`trendF Ziel Bestand`,
   trend2 = DAV2004r.data$`trendF Start Bestand`,
   dampingFunction = DAV2004R.trend.switching(T1 = 5, T2 = 10),
-  # selection = DAV2004r.data.Selection$SelectFemale,
-  # TODO: Add deathProbs before begin of selection effects
+  selectionFactors = DAV2004r.data.Selection$SelectFemale,
+  tableBeforeSelection = DAV2004R.female.Bestand,
   data = list(
     dim = list(table = "DAV 2004 R Bestand", sex = "w", collar = "Selekt", type = "Rententafel", country = "Deutschland", data = "uoaded", year = 1999)
   )
@@ -465,8 +440,8 @@ DAV2004R.male.B20.selekt = mortalityTable.trendProjection(
   baseYear = 1999,
   deathProbs = DAV2004r.data$`qx Sel Bestand`,
   trend = DAV2004r.data$`trendM Start Bestand`,
-  # selection = DAV2004r.data.Selection$SelectMale,
-  # TODO: Add deathProbs before begin of selection effects
+  selectionFactors = DAV2004r.data.Selection$SelectMale,
+  tableBeforeSelection = DAV2004R.male.B20,
   data = list(
     dim = list(table = "DAV 2004 R B20", sex = "m", collar = "Selekt", type = "Rententafel", country = "Deutschland", data = "loaded", year = 1999)
   )
@@ -478,8 +453,8 @@ DAV2004R.female.B20.selekt = mortalityTable.trendProjection(
   baseYear = 1999,
   deathProbs = DAV2004r.data$`qy Sel Bestand`,
   trend = DAV2004r.data$`trendF Start Bestand`,
-  # selection = DAV2004r.data.Selection$SelectFemale,
-  # TODO: Add deathProbs before begin of selection effects
+  selectionFactors = DAV2004r.data.Selection$SelectFemale,
+  tableBeforeSelection = DAV2004R.female.B20,
   data = list(
     dim = list(table = "DAV 2004 R B20", sex = "w", collar = "Selekt", type = "Rententafel", country = "Deutschland", data = "uoaded", year = 1999)
   )
@@ -554,7 +529,6 @@ DAV2004r.data.av.F1Ord = readxl::read_excel(
 
 DAV2004R.av = array(
   data = c(mortalityTable.NA),
-  # data = c(NA),
   dim = c(2, 3),
   dimnames = list(Geschlecht = c("m", "w"), Tafel = c("1. Ordnung", "Bestand", "B20"))
 )

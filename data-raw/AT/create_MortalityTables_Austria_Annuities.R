@@ -4,6 +4,7 @@
 library(MortalityTables)
 library(here)
 library(readxl)
+library(tidyverse)
 
 
 
@@ -504,19 +505,6 @@ save(
   AVOe2005R.unisex.group.av,
 
   file = avoe2005R.av.file.out
-)
-
-
-ages = 0:120
-data.frame(ages = ages,
-           m = deathProbabilities(AVOe2005R[["m", "Einzel", "loaded"]], YOB = 1930),
-           w = deathProbabilities(AVOe2005R[["w", "Einzel", "loaded"]], YOB = 1930),
-           mG = deathProbabilities(AVOe2005R[["m", "Gruppe", "loaded"]], YOB = 1930),
-           wG = deathProbabilities(AVOe2005R[["w", "Gruppe", "loaded"]], YOB = 1930),
-           m.2Ord = deathProbabilities(AVOe2005R[["m", "Einzel", "unloaded"]], YOB = 1930),
-           w.2Ord = deathProbabilities(AVOe2005R[["w", "Einzel", "unloaded"]], YOB = 1930),
-           mG.2Ord = deathProbabilities(AVOe2005R[["m", "Gruppe", "unloaded"]], YOB = 1930),
-           wG.2Ord = deathProbabilities(AVOe2005R[["w", "Gruppe", "unloaded"]], YOB = 1930)
 )
 
 
