@@ -472,10 +472,34 @@ VBT2001 = array(
   dimnames = list(Sex = c("m", "f"), age = c("ANB", "ALB"), type = c("Composite", "Non-Smoker", "Smoker"))
 )
 
+createVBT2001 = function(sheet = 1, skip = 0, name, sex = "m", collar, ...) {
+  createUSSelectTable(
+    VBT2001file, sheet = sheet, skip = skip,
+    age.col = "Age...1", rm.cols = c("Age...28"),
+    name = name, year = 2001, scale = 0.001,
+    table = "2001 VBT", sex = sex, collar = collar, type = "VBT", country = "USA")
+}
+
+# TODO: dimensional info for ALB/ANB and Composite/Smoker/Non-Smoker! Currently, only one is stored as collar!
+VBT2001[["m", "ALB", "Composite"]] = createVBT2001(sheet = "VBT MComp ALB",skip = 6, name = "2001 VBT Male Composite ALB",   "m", "Composite")
+VBT2001[["m", "ALB", "Non-Smoker"]]= createVBT2001(sheet = "VBT MNS ALB",  skip = 2, name = "2001 VBT Male Non-Smoke ALB",   "m", "Non-Smoker")
+VBT2001[["m", "ALB", "Smoker"]]    = createVBT2001(sheet = "VBT MSM ALB",  skip = 2, name = "2001 VBT Male Smoker ALB",      "m", "Smoker")
+VBT2001[["f", "ALB", "Composite"]] = createVBT2001(sheet = "VBT FComp ALB",skip = 2, name = "2001 VBT Female Composite ALB", "f", "Composite")
+VBT2001[["f", "ALB", "Non-Smoker"]]= createVBT2001(sheet = "VBT FNS ALB",  skip = 2, name = "2001 VBT Female Non-Smoker ALB","f", "Non-Smoker")
+VBT2001[["f", "ALB", "Smoker"]]    = createVBT2001(sheet = "VBT FSM ALB",  skip = 2, name = "2001 VBT Female Smoker ALB",    "f", "Smoker")
+VBT2001[["m", "ALB", "Composite"]] = createVBT2001(sheet = "VBT MComp ANB",skip = 6, name = "2001 VBT Male Composite ANB",   "m", "Composite")
+VBT2001[["m", "ALB", "Non-Smoker"]]= createVBT2001(sheet = "VBT MNS ANB",  skip = 2, name = "2001 VBT Male Non-Smoker ANB",  "m", "Non-Smoker")
+VBT2001[["m", "ALB", "Smoker"]]    = createVBT2001(sheet = "VBT MSM ANB",  skip = 2, name = "2001 VBT Male Smoker ANB",      "m", "Smoker")
+VBT2001[["f", "ALB", "Composite"]] = createVBT2001(sheet = "VBT FComp ANB",skip = 2, name = "2001 VBT Female Composite ANB", "f", "Composite")
+VBT2001[["f", "ALB", "Non-Smoker"]]= createVBT2001(sheet = "VBT FNS ANB",  skip = 2, name = "2001 VBT Female Non-Smoker ANB","f", "Non-Smoker")
+VBT2001[["f", "ALB", "Smoker"]]    = createVBT2001(sheet = "VBT FSM ANB",  skip = 2, name = "2001 VBT Female Smoker ANB",    "f", "Smoker")
+
+save(
+  VBT2001,
+  file = VBT2001file.out
+)
 
 
-
-# TODO!
 
 
 #############################################################################h#
