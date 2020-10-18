@@ -8,7 +8,9 @@ NULL
 #' @param selectionAge Age when selection starts (for tables with the \code{deathProbs} slot being a matrix rather than a single vector and for tables with \code{selectionFactors set})
 #'
 #' @examples
-#' # TODO
+#' baseProbabilities(DAV2004R.male.selekt)
+#' baseProbabilities(DAV2004R.male.selekt, selectionAge = 60)
+#' baseProbabilities(DAV2004R.male.selekt, selectionAge = 65)
 #'
 #' @exportMethod baseProbabilities
 setGeneric("baseProbabilities", function(object, ..., selectionAge = NULL) standardGeneric("baseProbabilities"));
@@ -24,9 +26,20 @@ setMethod("baseProbabilities", "mortalityTable.period",
                   probs = object@deathProbs
               } else {
                   cols = pmin(ncol(object@deathProbs), offsets)
+                  rws = seq_along(cols)
+                  if (object@selectInitialAge) {
+                      # if data gives selection by initial age, make sure to
+                      # walk along thw same row until the ultimate table is reached
+                      rws = rws - cols + 1
+                      # For ages before the first attained age of the ultimate table,
+                      # use the select probabilities, even before the desired select age
+                      cols = cols + pmin(0, rws - 1)
+                      rws = pmax(1, rws)
+                  }
                   # exctract the corresponding columns for each age:
                   # See https://stackoverflow.com/questions/20036255/get-the-vector-of-values-from-different-columns-of-a-matrix
-                  probs = object@deathProbs[cbind(seq_along(cols), cols)]
+                  # TODO: Check if any index is outside the existing dimensions!
+                  probs = object@deathProbs[cbind(rws, cols)]
               }
               if (!is.null(object@selectionFactors)) {
                   # Add a terminal 1 just in case, so that after the selection period, no modification occurs
@@ -50,4 +63,5 @@ setMethod("baseProbabilities","mortalityTable.mixed",
               # We already have the correct ages from the baseProbabilities call above
               object@modification(mixedqx)
           })
+
 

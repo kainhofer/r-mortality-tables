@@ -48,6 +48,7 @@ mortalityTable.period = setClass(
         deathProbs = "numericArray",
         exposures = "numericArrayOrNULL",
         selectionFactors = "numericOrNULL",
+        selectInitialAge = "logical",
         tableBeforeSelection = "mortalityTableOrNULL"
     ),
     prototype = list(
@@ -55,6 +56,7 @@ mortalityTable.period = setClass(
         deathProbs = rep(1,120),
         exposures = NULL,
         selectionFactors = NULL,
+        selectInitialAge = FALSE,
         tableBeforeSelection = NULL
     ),
     contains = "mortalityTable"

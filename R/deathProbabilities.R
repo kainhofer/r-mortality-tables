@@ -1,6 +1,8 @@
 #' @include mortalityTable.R mortalityTable.period.R mortalityTable.ageShift.R mortalityTable.trendProjection.R mortalityTable.improvementFactors.R mortalityTable.mixed.R fillAges.R
 NULL
 
+# TODO: Handle @tableBeforeSelection slot!
+
 #' Return the (cohort) death probabilities of the life table given the birth year (if needed)
 #'
 #' @param object The life table object (class inherited from mortalityTable)

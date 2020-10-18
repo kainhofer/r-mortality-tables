@@ -19,7 +19,12 @@ setGeneric("ages", function(object, ...) standardGeneric("ages"));
 #' @describeIn ages Return the defined ages of the period life table
 setMethod("ages", "mortalityTable.period",
           function(object, ...) {
-              object@ages;
+              if (is.vector(object@deathProbs)) {
+                  object@ages
+              } else {
+                  ages.ini.ult = c(object@ages, object@ages + ncol(object@deathProbs) - 1)
+                  sort(unique(ages.ini.ult))
+              }
           })
 
 #' @describeIn ages Return the defined ages of the mixed life table
