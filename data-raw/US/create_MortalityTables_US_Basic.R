@@ -419,7 +419,7 @@ createUS1990SelectTable.Breakdown = function(
   USA.1990.95.Basic.Breakdown[[sex, ageType, "Smoker"]] <<- createUS1990SelectSubTable(data, "Smoker", name = name, scale = scale, sex = sex, ageType = ageType, ...)
   USA.1990.95.Basic.Breakdown[[sex, ageType, "Band1"]] <<- createUS1990SelectSubTable(data, "Band1", name = name, scale = scale, sex = sex, ageType = ageType, ...)
   USA.1990.95.Basic.Breakdown[[sex, ageType, "Band2"]] <<- createUS1990SelectSubTable(data, "Band2", name = name, scale = scale, sex = sex, ageType = ageType, ...)
-  USA.1990.95.Basic.Breakdown[[sex, ageType, "Band3"]] <<- createUS1990SelectSubTable(data, "Band3", name = name, scale = scale, sex = sex, ageType = ageType, ..)
+  USA.1990.95.Basic.Breakdown[[sex, ageType, "Band3"]] <<- createUS1990SelectSubTable(data, "Band3", name = name, scale = scale, sex = sex, ageType = ageType, ...)
 }
 
 createUS1990SelectTable.Breakdown(
@@ -496,7 +496,7 @@ save(
 ### Primary Tables                ####
 #------------------------------------#
 
-VBT2008file = here::here("data-raw", "US", "VBT", "App C - 2008 VBT Primary Tables 2008 12_w Sm Unk.xls")
+VBT2008file = here::here("data-raw", "US", "VBT", "2008 VBT", "App C - 2008 VBT Primary Tables 2008 12_w Sm Unk.xls")
 VBT2008file.out = here::here("data", "VBT2008.RData")
 
 VBT2008 = array(
@@ -513,7 +513,6 @@ createVBT2008 = function(sheet = 1, skip = 0, name, sex = "m", collar, ...) {
     table = "2008 VBT", sex = sex, collar = collar, type = "VBT", country = "USA", ...)
 }
 
-# TODO: dimensional info for ALB/ANB and Composite/Smoker/Non-Smoker! Currently, only one is stored as collar!
 VBT2008[["m", "ANB", "Non-Smoker"]]= createVBT2008(sheet = "Male NS ANB",   skip = 3, name = "2008 VBT Male Non-Smoker ANB",  "m", "Non-Smoker", ageType = "ANB")
 VBT2008[["m", "ANB", "Composite"]] = createVBT2008(sheet = "Male SUN ANB",  skip = 3, name = "2008 VBT Male Composite ANB",   "m", "Composite",  ageType = "ANB")
 VBT2008[["m", "ANB", "Smoker"]]    = createVBT2008(sheet = "Male SM ANB",   skip = 3, name = "2008 VBT Male Smoker ANB",      "m", "Smoker",     ageType = "ANB")
@@ -539,7 +538,7 @@ save(
 ### Limited Underwriting tables   ####
 #------------------------------------#
 
-VBT2008LUfile = here::here("data-raw", "US", "VBT", "App G - 2008 VBT Limited Underwriting Tables 2008 12_w Sm Unk.xls")
+VBT2008LUfile = here::here("data-raw", "US", "VBT", "2008 VBT", "App G - 2008 VBT Limited Underwriting Tables 2008 12_w Sm Unk.xls")
 VBT2008LUfile.out = here::here("data", "VBT2008.LimitedUnderwriting.RData")
 
 VBT2008.LimitedUnderwriting = array(
@@ -619,7 +618,7 @@ for (sex in c("m", "f")) {
     Sm = "Nonsmoker"
     Sm.short = "NS"
     for (RR in c("RR70", "RR80", "RR90", "RR100", "RR110", "RR120", "RR130", "RR140", "RR150", "RR160")) {
-      file = here::here("data-raw", "US", "VBT", sprintf("2008 VBT %s %s %s Relative Risk Tables 2008 12.xls", Sx, Sm, ageType))
+      file = here::here("data-raw", "US", "VBT", "2008 VBT", sprintf("2008 VBT %s %s %s Relative Risk Tables 2008 12.xls", Sx, Sm, ageType))
       sheet = sprintf("%s %s %s %s", Sx, RR, Sm.short, ageType)
       VBT2008.RelativeRisk.NS[[sex, ageType, RR]] = createVBT2008RR(
         file = file, sheet = sheet, skip = 3,
@@ -637,7 +636,7 @@ for (sex in c("m", "f")) {
     Sm = "Smoker"
     Sm.short = "SM"
     for (RR in c("RR75", "RR100", "RR125", "RR150")) {
-      file = here::here("data-raw", "US", "VBT", sprintf("2008 VBT %s %s %s Relative Risk Tables 2008 12.xls", Sx, Sm, ageType))
+      file = here::here("data-raw", "US", "VBT", "2008 VBT", sprintf("2008 VBT %s %s %s Relative Risk Tables 2008 12.xls", Sx, Sm, ageType))
       sheet = sprintf("%s %s %s %s", Sx, RR, Sm.short, ageType)
       VBT2008.RelativeRisk.SM[[sex, ageType, RR]] = createVBT2008RR(
         file = file, sheet = sheet, skip = 3,
@@ -664,10 +663,136 @@ save(
 # USA 2015 VBT Tables                                                      ####
 #############################################################################h#
 
-VBT2015file = here::here("data-raw", "US", "VBT", "USA_2015_VBT.xlsx")
-VBT2015file.out = here::here("data", "US.2015.VBT.RData")
+#------------------------------------#
+### Primary Tables                ####
+#------------------------------------#
 
-# TODO!
+VBT2015file = here::here("data-raw", "US", "VBT", "2015 VBT", "2015-vbt-unismoke-alb-anb.xlsx")
+VBT2015SMfile = here::here("data-raw", "US", "VBT", "2015 VBT", "2015-vbt-smoker-distinct-alb-anb.xlsx")
+VBT2015file.out = here::here("data", "VBT2015.RData")
+
+VBT2015 = array(
+  data = c(mortalityTable.NA),
+  dim = c(2, 2, 3),
+  dimnames = list(Sex = c("m", "f"), age = c("ANB", "ALB"), type = c("Unismoke", "Non-Smoker", "Smoker"))
+)
+
+createVBT2015 = function(file, sheet, skip = 2, sex = "m", collar, ageType, ...) {
+  Sx = recode(sex, "m" = "Male", "f" = "Female")
+  name = sprintf("2015 VBT %s %s %s", Sx, collar, ageType)
+  if(missing(sheet)) {
+    if (collar == "Unismoke") {
+      sheet = sprintf("2015 %s %s %s", Sx, collar, ageType)
+    } else {
+      sheet = sprintf("2015 %s%s %s", toupper(sex), recode(collar, "Smoker" = "SM", "Non-Smoker" = "NS"), ageType)
+    }
+  }
+  createUSSelectTable(
+    file = file, sheet = sheet, skip = skip,
+    age.col = "Iss. Age", rm.cols = c("Att. Age"),
+    name = name, year = 2015, scale = 0.001,
+    table = sprintf("2015 VBT %s", collar), sex = sex, collar = collar, type = "VBT", country = "USA", ageType = ageType, ...)
+}
+
+VBT2015[["m", "ANB", "Unismoke"]]  = createVBT2015(file = VBT2015file, sex = "m", collar = "Unismoke",   ageType = "ANB")
+VBT2015[["f", "ANB", "Unismoke"]]  = createVBT2015(file = VBT2015file, sex = "f", collar = "Unismoke",   ageType = "ANB")
+VBT2015[["m", "ALB", "Unismoke"]]  = createVBT2015(file = VBT2015file, sheet = "Male Unismoke ALB", sex = "m", collar = "Unismoke",   ageType = "ALB")
+VBT2015[["f", "ALB", "Unismoke"]]  = createVBT2015(file = VBT2015file, sheet = "Female Unismoke ALB", sex = "f", collar = "Unismoke",   ageType = "ALB")
+
+VBT2015[["m", "ANB", "Non-Smoker"]]= createVBT2015(file = VBT2015SMfile, sex = "m", collar = "Non-Smoker", ageType = "ANB")
+VBT2015[["m", "ANB", "Smoker"]]    = createVBT2015(file = VBT2015SMfile, sex = "m", collar = "Smoker",     ageType = "ANB")
+VBT2015[["f", "ANB", "Non-Smoker"]]= createVBT2015(file = VBT2015SMfile, sex = "f", collar = "Non-Smoker", ageType = "ANB")
+VBT2015[["f", "ANB", "Smoker"]]    = createVBT2015(file = VBT2015SMfile, sex = "f", collar = "Smoker",     ageType = "ANB")
+VBT2015[["m", "ALB", "Non-Smoker"]]= createVBT2015(file = VBT2015SMfile, sex = "m", collar = "Non-Smoker", ageType = "ALB")
+VBT2015[["m", "ALB", "Smoker"]]    = createVBT2015(file = VBT2015SMfile, sex = "m", collar = "Smoker",     ageType = "ALB")
+VBT2015[["f", "ALB", "Non-Smoker"]]= createVBT2015(file = VBT2015SMfile, sex = "f", collar = "Non-Smoker", ageType = "ALB")
+VBT2015[["f", "ALB", "Smoker"]]    = createVBT2015(file = VBT2015SMfile, sex = "f", collar = "Smoker",     ageType = "ALB")
+
+save(
+  VBT2015,
+  file = VBT2015file.out
+)
+
+
+
+
+#------------------------------------#
+### Relative Risk tables          ####
+#------------------------------------#
+
+VBT2015RRfile.out = here::here("data", "VBT2015.RelativeRisk.RData")
+
+VBT2015.RelativeRisk.SM = array(
+  data = c(mortalityTable.NA),
+  dim = c(2, 2, 4),
+  dimnames = list(
+    Sex = c("m", "f"),
+    age = c("ANB", "ALB"),
+    RR = c("RR75", "RR100", "RR125", "RR150")
+  )
+)
+
+VBT2015.RelativeRisk.NS = array(
+  data = c(mortalityTable.NA),
+  dim = c(2, 2, 10),
+  dimnames = list(
+    Sex = c("m", "f"),
+    age = c("ANB", "ALB"),
+    RR = c("RR50", "RR60", "RR70", "RR80", "RR90", "RR100", "RR110", "RR125", "RR150", "RR175")
+  )
+)
+
+
+createVBT2015RR = function(file, sheet, age.col = "Iss. Age", skip = 2, sex = "m", collar, ageType, RelativeRisk = "RR100",...) {
+  Sx = recode(sex, "m" = "Male", "f" = "Female")
+  name = sprintf("2015 VBT %s %s %s %s", RelativeRisk, Sx, collar, ageType)
+  if(missing(sheet)) {
+    sheet = sprintf("2015 %s %s%s %s", RelativeRisk, toupper(sex), recode(collar, "Smoker" = "SM", "Non-Smoker" = "NS"), ageType)
+  }
+  createUSSelectTable(
+    file = file, sheet = sheet, skip = skip,
+    age.col = age.col, rm.cols = c("Att. Age"),
+    name = name, year = 2015, scale = 0.001,
+    table = sprintf("2015 VBT %s %s", RelativeRisk, collar), sex = sex, collar = collar,
+    type = "VBT", country = "USA", agetType = ageType, RelativeRisk = RelativeRisk, ...)
+}
+
+
+for (sex in c("m", "f")) {
+  Sx = recode(sex, "m" = "Male", "f" = "Female")
+  for (ageType in c("ANB", "ALB")) {
+    type = "Non-Smoker"
+    Sm = "non"
+    file = here::here("data-raw", "US", "VBT", "2015 VBT", sprintf("2015-vbt-%s-%s-rr-%s.xlsx", tolower(Sx), Sm, tolower(ageType)))
+    for (RR in c("RR50", "RR60", "RR70", "RR80", "RR90", "RR100", "RR110", "RR125", "RR150", "RR175")) {
+      VBT2015.RelativeRisk.NS[[sex, ageType, RR]] = createVBT2015RR(
+        age.col = ifelse(ageType == "ALB", "Age", "Iss. Age"),
+        file = file,
+        sex = sex, collar = type, ageType = ageType, RelativeRisk = RR
+      )
+    }
+  }
+}
+for (sex in c("m", "f")) {
+  Sx = recode(sex, "m" = "Male", "f" = "Female")
+  for (ageType in c("ANB", "ALB")) {
+    type = "Smoker"
+    Sm = "smoker"
+    file = here::here("data-raw", "US", "VBT", "2015 VBT", sprintf("2015-vbt-%s-%s-rr-%s.xlsx", tolower(Sx), Sm, tolower(ageType)))
+    for (RR in c("RR75", "RR100", "RR125", "RR150")) {
+      VBT2015.RelativeRisk.SM[[sex, ageType, RR]] = createVBT2015RR(
+        age.col = ifelse(ageType == "ALB", "Age", "Iss. Age"),
+        file = file,
+        sex = sex, collar = type, ageType = ageType, RelativeRisk = RR
+      )
+    }
+  }
+}
+
+save(
+  VBT2015.RelativeRisk.SM, VBT2015.RelativeRisk.NS,
+  file = VBT2015RRfile.out
+)
 
 
 
