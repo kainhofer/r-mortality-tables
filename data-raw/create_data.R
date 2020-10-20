@@ -16,3 +16,4 @@ source(here("data-raw", "UK", "create_MortalityTables_UK_Population.R"))
 
 source(here("data-raw", "US", "create_MortalityTables_US_AccidentalDeath.R"))
 source(here("data-raw", "US", "create_MortalityTables_US_Basic.R"))
+source(here("data-raw", "US", "create_MortalityTables_US_CSO.R"))
