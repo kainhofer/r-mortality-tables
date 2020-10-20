@@ -1,6 +1,6 @@
-#############################################################################m#
-#  Skript to generate US Accidental death benefits table objects               ####
-#############################################################################m#
+################################################################################m#
+#  Skript to generate US Basic (select and ultimate) valuation table objects  ####
+################################################################################m#
 library(MortalityTables)
 library(here)
 library(readxl)
