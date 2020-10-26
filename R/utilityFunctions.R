@@ -947,3 +947,63 @@ pT.recalculateTotalMortality = function(object, ...) {
     object
 }
 
+
+
+#' Set a certain slot of the mortality tables (or of each element of the list of tables)
+#'
+#' The function mt.setSlot adds the given slot to all mortalityTable objects.
+#'
+#' @param object The mortalityTable object to be modified (or a list / array of mortalityTable object)
+#' @param slot the desired slot to set
+#' @param value the value for the slot
+#'
+#' @examples
+#' mortalityTables.load("Austria_Census")
+#' # Add 10-year selection factors to the population mortality
+#' mort.AT.census.2011.male.select = mT.setSlot(mort.AT.census.2011.male, "selectionFactors", 1:10/10)
+#'
+#' @exportMethod mT.setSlot
+setGeneric("mT.setSlot", function(object, slot, value = NULL) standardGeneric("mT.setSlot"));
+
+#' @describeIn mT.setSlot Set a slot for the given mortalityTable
+setMethod("mT.setSlot", "mortalityTable",
+          function(object, slot, value = NULL) {
+              slot(object, slot) <- value
+              object
+          })
+#' @describeIn mT.setSlot Set a slot for the mortalityTables stored in an array
+setMethod("mT.setSlot", "array",
+          function(object, slot, value = NULL) {
+              array(
+                  lapply(object, mT.setSlot, slot = slot, value = value),
+                  dim = dim(object), dimnames = dimnames(object))
+          })
+#' @describeIn mT.setSlot Set a slot for the given mortalityTables stored in a list
+setMethod("mT.setSlot", "list",
+          function(object, slot, value = NULL) {
+              lapply(object, mT.setSlot, slot = slot, value = value)
+          })
+
+#' @describeIn mT.setSlot Set a slot for all components of a pensionTable
+setMethod("mT.setSlot", "pensionTable",
+          function(object, slot, value = NULL) {
+              object@qx = mT.setSlot(object@qx, slot = slot, value = value)
+              object@ix = mT.setSlot(object@ix, slot = slot, value = value)
+              object@qix = mT.setSlot(object@qix, slot = slot, value = value)
+              object@rx = mT.setSlot(object@rx, slot = slot, value = value)
+              object@apx = mT.setSlot(object@apx, slot = slot, value = value)
+              object@qpx = mT.setSlot(object@qpx, slot = slot, value = value)
+              object@hx = mT.setSlot(object@hx, slot = slot, value = value)
+              object@qwy = mT.setSlot(object@qwy, slot = slot, value = value)
+              object@qgx = mT.setSlot(object@qgx, slot = slot, value = value)
+              object
+          })
+
+#' @describeIn mT.setSlot Empty dummy function that simply returns NULL
+setMethod("mT.setSlot", "NULL",
+          function(object, slot, value = NULL) {
+              NULL
+          })
+
+
+
