@@ -53,6 +53,320 @@ createUSSelectTable = function(
 
 
 #############################################################################h#
+# USA 1980 CSO Tables                                                      ####
+#############################################################################h#
+
+CSO1980.file = here::here("data-raw", "US", "CSO", "1980 CSO", "USA_1980_CSO-CET.xlsx")
+CSO1980.file.out = here::here("data", "CSO1980.RData")
+
+CSO1980 = array(
+  data = c(mortalityTable.NA),
+  dim = c(7, 2, 3),
+  dimnames = list(
+    sex = c("m", "80% Male", "60% Male", "50% Male", "40% Male", "20% Male", "f"),
+    age = c("ANB", "ALB"),
+    type = c("Composite", "Non-Smoker", "Smoker")
+  )
+)
+CET1980 = CSO1980
+
+CSO1980.basic = array(
+  data = c(mortalityTable.NA),
+  dim = c(2, 1, 3),
+  dimnames = list(
+    sex = c("m", "f"),
+    age = c("ANB"),
+    type = c("Composite", "Non-Smoker", "Smoker")
+  )
+)
+
+createCSO1980 = function(
+  data, col, age.col = "Age",
+  sex = "Male", collar = "Composite", ageType = "ANB",
+  table = "1980 CSO", baseYear = 1980, ...
+) {
+  qx = data %>%
+    select(age = !!age.col, qx = !!col) %>%
+    filter(!is.na(qx))
+
+  name = ifelse(collar == "Composite",
+    sprintf("%s %s %s", table, sex, ageType),
+    sprintf("%s %s %s %s", table, sex, collar, ageType))
+
+  mortalityTable.period(
+    name = name, ages = qx$age, deathProbs = qx$qx, baseYear = baseYear,
+    selectInitialAge = TRUE,
+    data = list(
+      dim = list(table = table, sex = sex, collar = collar, country = "USA", ageType = ageType, data = "official", year = baseYear, ...)
+    )
+  )
+}
+
+
+# plotMortalityTables(CSO1980) + facet_grid(.~ageType)
+#-----------------------------------------------------------------#
+### Primary Tables: M/F Comp/NS/SM ANB                         ####
+#-----------------------------------------------------------------#
+
+CSO.data = full_join(
+  read_excel(CSO1980.file, sheet = "1980 CSO", skip = 4),
+  read_excel(CSO1980.file, sheet = "1980 CSO gender-blended", skip = 5),
+  by = "Age"
+)
+CET.data = full_join(
+  read_excel(CSO1980.file, sheet = "1980 CET", skip = 4),
+  read_excel(CSO1980.file, sheet = "1980 CET gender-blended", skip = 5),
+  by = "Age"
+)
+for (sex in c("m", "80% Male", "60% Male", "50% Male", "40% Male", "20% Male", "f")) {
+  Sx = recode(sex, "m" = "Male", "f" = "Female")
+  for (ageType in c("ANB", "ALB")) {
+    for (type in c("Composite", "Non-Smoker", "Smoker")) {
+      col = ifelse(type == "Composite", paste(Sx, ageType), paste(Sx, type, ageType))
+      CSO1980[[sex, ageType, type]] = createCSO1980(
+        data = CSO.data, col = col, age.col = "Age",
+        table = "1980 CSO", sex = Sx, collar = type, ageType = ageType
+      )
+      CET1980[[sex, ageType, type]] = createCSO1980(
+        data = CSO.data, col = col, age.col = "Age",
+        table = "1980 CSO", sex = Sx, collar = type, ageType = ageType
+      )
+    }
+  }
+}
+for (sex in c("m", "f")) {
+  Sx = recode(sex, "m" = "Male", "f" = "Female")
+  for (ageType in c("ANB")) {
+    for (type in c("Composite", "Non-Smoker", "Smoker")) {
+      col = ifelse(type == "Composite", paste("Basic Table", Sx, ageType), paste("Basic Table", Sx, type, ageType))
+      CSO1980.basic[[sex, ageType, type]] = createCSO1980(
+        data = CSO.data, col = col, age.col = "Age",
+        table = "1980 CSO Basic", sex = Sx, collar = type, ageType = ageType
+      )
+    }
+  }
+}
+
+# plotMortalityTables(CSO1980, aes = aes(color = sex)) + facet_grid(ageType ~ collar)
+# plotMortalityTables(CSO1980.basic, aes = aes(color = sex)) + facet_grid(ageType ~ collar)
+# plotMortalityTables(CSO1980.basic, aes = aes(color = collar, linetype = sex))
+
+
+
+#-----------------------------------------------------------------#
+### Select tables                                              ####
+#-----------------------------------------------------------------#
+
+CSO1980.select = CSO1980
+CET1980.select = CET1980
+
+# Add selection factors
+CSO1980.selectionFactors = list()
+
+for (sex in c("m", "80% Male", "60% Male", "50% Male", "40% Male", "20% Male", "f")) {
+  CSO1980.selectionFactors[[sex]] = read_excel(CSO1980.file, sheet = sprintf("Selection Factors %s", recode(sex, "m" = "Male", "f" = "Female")), skip = 4)
+  CSO1980.select[sex,,] = CSO1980.select[sex,,] %>%
+    mT.setSlot("selectionFactors", CSO1980.selectionFactors[[sex]]) %>%
+    mT.setDimInfo(data = "select")
+  CET1980.select[sex,,] = CET1980.select[sex,,] %>%
+    mT.setSlot("selectionFactors", CSO1980.selectionFactors[[sex]]) %>%
+    mT.setDimInfo(data = "select")
+}
+
+
+
+# plotMortalityTables(
+#   CSO1980[,"ANB","Composite"] %>% mT.setDimInfo(SelectionAge = "Ultimate"),
+# CSO1980.select[,"ANB","Composite"] %>% getPeriodTable(Period = 1980, selectionAge = 20) %>% mT.setDimInfo(SelectionAge = 20),
+# CSO1980.select[,"ANB","Composite"] %>% getPeriodTable(Period = 1980, selectionAge = 40) %>% mT.setDimInfo(SelectionAge = 40),
+# CSO1980.select[,"ANB","Composite"] %>% getPeriodTable(Period = 1980, selectionAge = 60) %>% mT.setDimInfo(SelectionAge = 60),
+# CSO1980.select[,"ANB","Composite"] %>% getPeriodTable(Period = 1980, selectionAge = 80) %>% mT.setDimInfo(SelectionAge = 80),
+# aes = aes(color = as.factor(SelectionAge))
+# ) + facet_grid(sex~.)
+
+
+save(CSO1980, CET1980, CSO1980.basic, CSO1980.select, CET1980.select, file = CSO1980.file.out)
+
+
+
+
+
+
+
+#############################################################################h#
+# USA 2001 CSO Tables                                                      ####
+#############################################################################h#
+
+CSO2001.file.out = here::here("data", "CSO2001.RData")
+
+CSO2001 = array(
+  data = c(mortalityTable.NA),
+  dim = c(7, 2, 3),
+  dimnames = list(
+    sex = c("m", "80% Male", "60% Male", "50% Male", "40% Male", "20% Male", "f"),
+    age = c("ANB", "ALB"),
+    type = c("Composite", "Non-Smoker", "Smoker")
+  )
+)
+
+createCSO2001 = function(
+  file, sheet, skip = 2,
+  sex = "m", collar = "Composite", ageType,
+  age.col = "Iss. Age", rm.cols = c("Att. Age"),
+  ...
+) {
+  Sx = recode(sex, "m" = "Male", "f" = "Female")
+  name = sprintf("2001 CSO %s %s %s", Sx, collar, ageType)
+  if(missing(sheet)) {
+    if (collar == "Composite") {
+      sheet = sprintf("2001 %s %s %s", Sx, collar, ageType)
+    } else {
+      sheet = sprintf("2001 %s%s %s", toupper(sex), recode(collar, "Smoker" = "SM", "Non-Smoker" = "NS"), ageType)
+    }
+  }
+  createUSSelectTable(
+    file = file, sheet = sheet, skip = skip,
+    age.col = age.col, rm.cols = rm.cols,
+    name = name, year = 2001, scale = 0.001,
+    table = sprintf("2001 CSO %s", collar), sex = sex, collar = collar, type = "CSO", country = "USA", ageType = ageType,
+    ...)
+}
+
+# plotMortalityTables(CSO2001) + facet_grid(.~ageType)
+#-----------------------------------------------------------------#
+### Primary Tables: M/F Comp/NS/SM ANB                         ####
+#-----------------------------------------------------------------#
+
+file = here::here("data-raw", "US", "CSO", "2001 CSO", "Table 2001 VBT CSO.xls")
+for (sex in c("m", "f")) {
+  Sx = recode(sex, "m" = "Male", "f" = "Female")
+  for (ageType in c("ANB")) {
+    for (type in c("Composite", "Non-Smoker", "Smoker")) {
+      sheet = sprintf("CSO %s%s", toupper(sex), recode(type, "Composite" = "Comp", "Smoker" = "SM", "Non-Smoker" = "NS"))
+      CSO2001[[sex, ageType, type]] = createCSO2001(
+        file = file, sheet = sheet,
+        age.col = "2001 Valuation Basic Table and  2001 CSO Table", rm.cols = "Age",
+        sex = sex, collar = type, ageType = ageType
+      )
+    }
+  }
+}
+
+file = here::here("data-raw", "US", "CSO", "2001 CSO", "CSO_taskforce_appendix_j3_june2002.xls")
+for (sex in c("m", "f")) {
+  Sx = recode(sex, "m" = "Male", "f" = "Female")
+  for (ageType in c("ALB")) {
+    for (type in c("Composite", "Non-Smoker", "Smoker")) {
+      sheet = sprintf("(%s) %s S&U %s", toupper(sex), type, ageType)
+      CSO2001[[sex, ageType, type]] = createCSO2001(
+        file = file, sheet = sheet, skip = 1,
+        age.col = "Issue Age", rm.cols = "Attained Age",
+        sex = sex, collar = type, ageType = ageType
+      )
+    }
+  }
+}
+
+# Gender-blended tables
+file = here::here("data-raw", "US", "CSO", "2001 CSO", "CSO_taskforce_appendix_j3_june2002.xls")
+for (sex in c("80% Male", "60% Male", "50% Male", "40% Male", "20% Male")) {
+  Sx = substr(sex, 1, 2)
+  for (ageType in c("ANB", "ALB")) {
+    for (type in c("Composite", "Non-Smoker", "Smoker")) {
+      sheet = sprintf("(%s) %s S&U %s", Sx, type, ageType)
+      CSO2001[[sex, ageType, type]] = createCSO2001(
+        file = file, sheet = sheet, skip = 1,
+        age.col = "Issue Age", rm.cols = "Attained Age",
+        sex = sex, collar = type, ageType = ageType
+      )
+    }
+  }
+}
+
+
+
+# plotMortalityTables(CSO2001) + facet_grid(ageType ~ collar) + aes(color = sex)
+# plotMortalityTables(CSO2001) + facet_grid(sex ~ ageType) + aes(color = collar)
+
+save(CSO2001, file = CSO2001.file.out)
+
+
+#-----------------------------------------------------------------#
+### Preferred 2001 CSO Tables (only loaded)                    ####
+#-----------------------------------------------------------------#
+
+CSO2001.Preferred = array(
+  data = c(mortalityTable.NA),
+  dim = c(3, 2, 2, 2),
+  dimnames = list(
+    preferred = c("Super Preferred", "Preferred", "Residual"),
+    sex = c("m", "f"),
+    age = c("ANB", "ALB"),
+    type = c("Non-Smoker", "Smoker")
+  )
+)
+
+createCSO2001.Preferred = function(
+  file, sheet, skip = 6,
+  sex = "m", collar = "Composite", ageType, Preferred = "Preferred",
+  age.col = "...1", rm.cols = c("Age"),
+  ...
+) {
+  # browser()
+  Sx = recode(sex, "m" = "Male", "f" = "Female")
+  name = sprintf("2001 CSO %s %s - %s %s", Preferred, ageType, Sx, collar)
+  if(missing(sheet)) {
+    if (collar == "Non-Smoker") {
+      prf = recode(Preferred, "Super Preferred" = 1, "Preferred" = 2, "Residual" = 3)
+    } else {
+      prf = recode(Preferred, "Preferred" = 1, "Residual" = 2)
+    }
+    sheet = sprintf("%s%s%s %s", toupper(sex), Sm.short, prf, ageType)
+  }
+  createUSSelectTable(
+    file = file, sheet = sheet, skip = skip,
+    age.col = age.col, rm.cols = rm.cols,
+    name = name, year = 2001, scale = 0.001,
+    table = sprintf("2001 CSO %s", collar), sex = sex, collar = collar, type = "CSO", country = "USA", ageType = ageType, Preferred = Preferred,
+    ...)
+}
+
+
+file = here::here("data-raw", "US", "CSO", "2001 CSO Preferred", "2001 CSO Preferred Class Structure Mortality Tables.xls")
+for (preferred in c("Super Preferred", "Preferred", "Residual")) {
+  for (sex in c("m", "f")) {
+    for (ageType in c("ANB", "ALB")) {
+      for (type in c("Smoker", "Non-Smoker")) {
+        # There are no super-preferred smokers => skip that case
+        if (preferred != "Super Preferred" || type != "Smoker") {
+          # Sheet naming is defined in the tab "Table of Contents": A.[1234].[ab].{i,ii,iii,iv,v}
+          sheet = sprintf("A.%d.%s.%s", recode(ageType, "ANB" = 1, "ALB" = 3), recode(sex, "m" = "a", "f" = "b"), recode(
+            paste(preferred, type),
+            "Super Preferred Non-Smoker" = "i",
+            "Preferred Non-Smoker" = "ii",
+            "Residual Non-Smoker" = "iii",
+            "Preferred Smoker" = "iv",
+            "Residual Smoker" = "v"))
+          CSO2001.Preferred[[preferred, sex, ageType, type]] = createCSO2001.Preferred(
+            file = file, sheet = sheet,
+            sex = sex, collar = type, ageType = ageType, Preferred = preferred
+          )
+        }
+      }
+    }
+  }
+}
+
+
+# plotMortalityTables(CSO2001.Preferred[,,"ANB",], legend.position = "bottom") + facet_grid(sex ~ collar) + aes(color = Preferred)
+
+save(CSO2001.Preferred, file = CSO2001Pref.file.out)
+
+
+
+
+
+#############################################################################h#
 # USA 2017 CSO Tables                                                      ####
 #############################################################################h#
 
@@ -205,6 +519,7 @@ save(CSO2017, file = CSO2017file.out)
 # plotMortalityTables(CSO2017) + facet_grid(ageType ~ collar) + aes(linetype = loaded, color = sex)
 
 # plotMortalityTables(CSO2017) + facet_grid(sex ~ ageType) + aes(linetype = loaded, color = collar)
+# plotMortalityTables(CSO2017.Preferred[,,"ANB",,]) + facet_grid(sex ~ collar) + aes(linetype = loaded, color = Preferred)
 
 
 #-----------------------------------------------------------------#
