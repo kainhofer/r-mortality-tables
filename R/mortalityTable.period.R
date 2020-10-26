@@ -1,8 +1,8 @@
 #' @include mortalityTable.R
 NULL
 
-setClassUnion("numericArray", c("numeric", "array", "matrix"))
-setClassUnion("numericArrayOrNULL", c("numeric", "array", "matrix", "NULL"))
+setClassUnion("numericArray", c("numeric", "array", "matrix", "data.frame"))
+setClassUnion("numericArrayOrNULL", c("numeric", "array", "matrix", "data.frame", "NULL"))
 setClassUnion("numericOrNULL", c("numeric", "NULL"))
 setClassUnion("mortalityTableOrNULL", c("mortalityTable", "NULL"))
 
@@ -47,7 +47,7 @@ mortalityTable.period = setClass(
         ages = "numeric",
         deathProbs = "numericArray",
         exposures = "numericArrayOrNULL",
-        selectionFactors = "numericOrNULL",
+        selectionFactors = "numericArrayOrNULL",
         selectInitialAge = "logical",
         tableBeforeSelection = "mortalityTableOrNULL"
     ),

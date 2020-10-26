@@ -32,6 +32,8 @@ life table given the birth year (if needed)
 }}
 
 \examples{
-# TODO
+baseProbabilities(DAV2004R.male.selekt)
+baseProbabilities(DAV2004R.male.selekt, selectionAge = 60)
+baseProbabilities(DAV2004R.male.selekt, selectionAge = 65)
 
 }
