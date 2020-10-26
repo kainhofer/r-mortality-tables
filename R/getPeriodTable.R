@@ -23,15 +23,22 @@ setGeneric("getPeriodTable",
 #' @describeIn getPeriodTable Return the period life table as a
 #'             \code{mortalityTable.period} object
 setMethod("getPeriodTable","mortalityTable",
-          function (object, Period, ...) {
+          function (object, Period, ages = NULL, ...) {
               if(missing(Period)) {
                   Period = baseYear(object)
               }
+              if (missing(ages) | is.null(ages)) {
+                  ages = ages(object)
+              }
+              data = object@data
+              data$dim$Period = Period
+              data$dim$year = Period
               mortalityTable.period(
                   name = paste0(object@name, ", Period ", Period),
                   baseYear = Period,
-                  ages = ages(object),
-                  deathProbs = periodDeathProbabilities(object, Period = Period, ...)
+                  ages = ages,
+                  deathProbs = periodDeathProbabilities(object, Period = Period, ages = ages, ...),
+                  data = data
               )
           })
 
