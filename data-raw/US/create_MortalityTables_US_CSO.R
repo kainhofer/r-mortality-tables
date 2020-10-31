@@ -51,6 +51,85 @@ createUSSelectTable = function(
 
 
 
+#############################################################################h#
+# USA 1958 CSO Tables                                                      ####
+#############################################################################h#
+
+CSO1958.file = here::here("data-raw", "US", "CSO", "1958 CSO", "USA_1958_CSO-CET.xlsx")
+CSO1958.file.out = here::here("data", "CSO1958.RData")
+
+CSO1958 = array(
+  data = c(mortalityTable.NA),
+  dim = c(2, 2),
+  dimnames = list(
+    sex = c("m", "f"),
+    age = c("ANB", "ALB")
+  )
+)
+CET1958 = CSO1958
+
+CSO1958.basic = array(
+  data = c(mortalityTable.NA),
+  dim = c(2),
+  dimnames = list(
+    sex = c("m", "f")
+  )
+)
+
+createCSO1958 = function(
+  data, col, age.col = "Age", sex = "m", collar = "Composite",
+  ageType = "ANB",table = "1958 CSO", baseYear = 1958, ...
+) {
+  qx = data %>%
+    select(age = !!age.col, qx = !!col) %>%
+    filter(!is.na(qx))
+
+  Sx = recode(sex, "m" = "Male", "f" = "Female")
+  name = sprintf("%s %s %s", table, Sx, ageType)
+
+  mortalityTable.period(
+    name = name, ages = qx$age, deathProbs = qx$qx, baseYear = baseYear,
+    selectInitialAge = TRUE,
+    data = list(
+      dim = list(table = table, sex = sex, collar = collar, country = "USA", ageType = ageType, data = "official", year = baseYear, ...)
+    )
+  )
+}
+
+
+CSO.data = read_excel(CSO1958.file, sheet = "1958 CSO CET", skip = 4)
+
+for (sex in c("m", "f")) {
+  Sx = recode(sex, "m" = "Male", "f" = "Female")
+  CSO1958.basic[[sex]] = createCSO1958(
+    data = CSO.data, col = paste("CSO Basic", Sx, "ANB"), age.col = "Age",
+    table = "1958 CSO Basic", sex = sex, ageType = "ANB"
+  )
+
+  for (ageType in c("ANB", "ALB")) {
+    CSO1958[[sex, ageType]] = createCSO1958(
+      data = CSO.data, col = paste("CSO", Sx, ageType), age.col = "Age",
+      table = "1958 CSO", sex = sex, ageType = ageType
+    )
+    CET1958[[sex, ageType]] = createCSO1958(
+      data = CSO.data, col = paste("CET", Sx, ageType), age.col = "Age",
+      table = "1958 CET", sex = sex, ageType = ageType
+    )
+  }
+}
+
+save(CSO1958, CSO1958.basic, CET1958, file = CSO1958.file.out)
+
+
+# plotMortalityTables(CSO1958, CET1958, CSO1958.basic, aes = aes(color = sex), title = "1958 CSO and CET tables") + facet_grid(table ~ageType)
+
+
+
+
+
+
+
+
 
 #############################################################################h#
 # USA 1980 CSO Tables                                                      ####
@@ -129,7 +208,7 @@ for (sex in c("m", "80% Male", "60% Male", "50% Male", "40% Male", "20% Male", "
       )
       CET1980[[sex, ageType, type]] = createCSO1980(
         data = CSO.data, col = col, age.col = "Age",
-        table = "1980 CSO", sex = Sx, collar = type, ageType = ageType
+        table = "1980 CET", sex = Sx, collar = type, ageType = ageType
       )
     }
   }
