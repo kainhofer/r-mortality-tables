@@ -52,6 +52,56 @@ createUSSelectTable = function(
 
 
 #############################################################################h#
+# USA 1941 CSO Tables                                                      ####
+#############################################################################h#
+
+CSO1941.file = here::here("data-raw", "US", "CSO", "1941 CSO", "USA_1941_CSO.xlsx")
+CSO1941.file.out = here::here("data", "CSO1941.RData")
+CSO1941.data = read_excel(CSO1941.file, sheet = "1941 CSO", skip = 4)
+
+CSO1941 = array(
+  data = c(mortalityTable.NA),
+  dim = c(2),
+  dimnames = list(
+    ageType = c("ANB", "ALB")
+  )
+)
+
+CSO1941[["ANB"]] = mortalityTable.period(
+  name = "1941 CSO ANB", ages = CSO1941.data$Age, deathProbs = CSO1941.data$`CSO ANB`, baseYear = 1941,
+  data = list(
+    dim = list(table = "1941 CSO", sex = "u", collar = "Composite", country = "USA", ageType = "ANB", data = "official", year = 1941)
+  )
+)
+CSO1941[["ALB"]] = mortalityTable.period(
+  name = "1941 CSO ALB", ages = CSO1941.data$Age, deathProbs = CSO1941.data$`CSO ALB`, baseYear = 1941,
+  data = list(
+    dim = list(table = "1941 CSO", sex = "u", collar = "Composite", country = "USA", ageType = "ALB", data = "official", year = 1941)
+  )
+)
+CSO1941.basic = mortalityTable.period(
+  name = "1941 CSO Basic ANB", ages = CSO1941.data$Age, deathProbs = CSO1941.data$`CSO Basic ANB`, baseYear = 1941,
+  data = list(
+    dim = list(table = "1941 CSO Basic", sex = "u", collar = "Composite", country = "USA", ageType = "ANB", data = "official", year = 1941)
+  )
+)
+
+save(CSO1941, CSO1941.basic, file = CSO1941.file.out)
+
+
+
+
+# plotMortalityTables(CSO1941, CSO1941.basic, title = "1941 CSO tables")
+
+
+
+
+
+
+
+
+
+#############################################################################h#
 # USA 1958 CSO Tables                                                      ####
 #############################################################################h#
 
@@ -89,7 +139,6 @@ createCSO1958 = function(
 
   mortalityTable.period(
     name = name, ages = qx$age, deathProbs = qx$qx, baseYear = baseYear,
-    selectInitialAge = TRUE,
     data = list(
       dim = list(table = table, sex = sex, collar = collar, country = "USA", ageType = ageType, data = "official", year = baseYear, ...)
     )
@@ -439,7 +488,7 @@ for (preferred in c("Super Preferred", "Preferred", "Residual")) {
 
 # plotMortalityTables(CSO2001.Preferred[,,"ANB",], legend.position = "bottom") + facet_grid(sex ~ collar) + aes(color = Preferred)
 
-save(CSO2001.Preferred, file = CSO2001Pref.file.out)
+save(CSO2001.Preferred, file = here::here("data", "CSO2001.Preferred.RData"))
 
 
 
@@ -449,6 +498,7 @@ save(CSO2001.Preferred, file = CSO2001Pref.file.out)
 # USA 2017 CSO Tables                                                      ####
 #############################################################################h#
 
+CSO2017file.out = here::here("data", "CSO2017.RData")
 CSO2017Pref.file.out = here::here("data", "CSO2017.Preferred.RData")
 
 CSO2017 = array(
