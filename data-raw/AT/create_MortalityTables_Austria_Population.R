@@ -40,7 +40,8 @@ mort.AT.census = array(
 
 
 censtable = function(file, table, sheet, baseYear = 1900, sex = "m", skip = 5, n_max = 102) {
-  data = read_excel(file, sheet = sheet, skip = skip, n_max = n_max)
+  data = read_excel(file, sheet = sheet, skip = skip, n_max = n_max) %>%
+    filter(!is.na(x))
   name = paste0("ÖVSt ", table, " ", dplyr::recode(sex, "m" = "M", "w" = "F", "u" = "U"))
   tbl = mortalityTable.period(
     name = name,
