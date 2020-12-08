@@ -579,6 +579,44 @@ mT.setDimInfo = function(tbl, ..., append = TRUE) {
 }
 
 
+#' Retrieve additional information (year, description, type of risk, sex, etc.) from the mortality table or list of tables.
+#'
+#' A mortalityTable can store additional information to be used e.g. as additional
+#' dimensions in ggplot calls. Typically, these information include sex, base
+#' population, observation year, type of data (raw, smoothed), country, type of
+#' risk, etc. These additional dimensions are stored in the \code{tbl@data} list
+#' and will be used by plotMortalityTables and similar functions.
+#'
+#' @param tbl The \code{mortalityTable} object from which to extract dimensional information
+#' @param name  The name of the dimensional information (as string) to extract
+#'
+#' @examples
+#' mortalityTables.load("Austria_Census")
+#' mortalityTables.load("Austria_Annuities")
+#' mT.getDimInfo(mort.AT.census, "table")
+#' mT.getDimInfo(mort.AT.census, "sex")
+#' @export
+mT.getDimInfo = function(tbl, name) {
+    if (is.array(tbl)) {
+        return(array(
+            lapply(tbl, mT.getDimInfo, name = name),
+            dim = dim(tbl), dimnames = dimnames(tbl))
+        )
+    } else if (is.list(tbl)) {
+        return(lapply(tbl, mT.getDimInfo, name = name))
+    } else if (is(tbl, "pensionTable")) {
+        return(pT.getDimInfo(tbl, name = name))
+    } else if (is.na(c(tbl))) {
+        return(tbl)
+    }
+
+    if (!is(tbl, "mortalityTable"))
+        stop("First argument must be a mortalityTable or a list of mortalityTable objects.")
+
+    tbl@data$dim[[name]]
+}
+
+
 #' Extract a sub-table from a pensionTable
 #'
 #'  This function \code{pT.getSubTable} allows access to the individual components

@@ -44,3 +44,9 @@ The function mt.setSlot adds the given slot to all mortalityTable objects.
 \item \code{NULL}: Empty dummy function that simply returns NULL
 }}
 
+\examples{
+mortalityTables.load("Austria_Census")
+# Add 10-year selection factors to the population mortality
+mort.AT.census.2011.male.select = mT.setSlot(mort.AT.census.2011.male, "selectionFactors", 1:10/10)
+
+}

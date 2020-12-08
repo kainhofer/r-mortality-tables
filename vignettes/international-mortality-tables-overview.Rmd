@@ -29,6 +29,55 @@ mortalityTables.load("Austria_Census")
 ```
 
 
+# Sources
+
+* https://www.oecd-ilibrary.org/finance-and-investment/mortality-assumptions-and-longevity-risk_9789264222748-en
+* https://avoe.at/
+* https://aktuar.de/
+
+
+## Various Links (to be processed):
+
+* Australian population life tables (1881-2017): http://www.aga.gov.au/publications/life_table_2015-17/
+* US Pri-2012 (US private sector retirement plans): https://www.soa.org/globalassets/assets/files/resources/experience-studies/2019/pri-2012-mort-tables-amount.xlsx
+* US Retirement Plans Experience Studies:  https://www.soa.org/research/topics/pension-exp-study-list/
+  * Mortality Improvement Scale MP-2019
+  * Mortality Improvement Scale MP-2018
+  * Mortality Improvement Scale MP-2017
+  * Mortality Improvement Scale MP-2016
+  * Mortality Improvement Scale MP-2015
+  * Mortality Improvement Scale MP-2014
+  * Mortality Improvement Scale BB
+  * Pri-2012 Private Retirement Plans Mortality Tables
+  * Pub-2010 Public Retirement Plans Mortality Tables
+  * RP-2014 Mortality Tables (and RPH-2014 for headcount-weighted)
+  * RP-2000 Mortality Tables
+* US IRS Static mortality tables (prescribed for each year)
+* Greece:
+  * EAE 2005 A (life products)
+  * EAE 2005 P (annuity products)
+  * EAE 2005 K (projection scale)
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                             NTERNATIONAL                              ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+
+# International / Supranational Tables
+
+## International Civil servants Life Table
+
+Source: https://www.sirp-isrp.org/index.php?option=com_content&view=article&id=1057:public-carrousel-actuaries&catid=247:public-home-carrousel&Itemid=992&lang=en
+
+* ICSLT 2013
+* ICSLT 2018
+
+TODO
+
 
 
 
@@ -40,7 +89,6 @@ mortalityTables.load("Austria_Census")
 <!-- ################################################################################ -->
 
 
-
 # Austria
 
 ## Annuities
@@ -49,11 +97,9 @@ Annuity tables in Austria are traditionally published by the [Actuarial Associat
 
 ### ÖVM 59/61 - RR 67
 
-[TODO: Get actual table data and publication]
 * Source: H. Nabl: ÖVM 59/61 - RR67 - 3%, Die Versicherungsrundschau, 22. Jahrgang, Heft 12, Dez. 1967, p.373--380.
 
 ```{r}
-mortalityTables.load("Austria_Annuities_RR67")
 plotMortalityTables(RR67, mort.AT.census.1961.male)
 ```
 
@@ -71,14 +117,11 @@ plotMortalityTables(RR67, mort.AT.census.1961.male)
 
 * Usage with the `MortalityTables` package:
 ```{r EROMF85, results="hide"}
-mortalityTables.load("Austria_Annuities_EROMF")
-EROM85.male
-EROF85.female
+EROM85
+EROF85
 
-EROM.G1950.male
-EROM.G1950.male.av
-EROF.G1950.female
-EROF.G1950.female.av
+EROM.G1950
+EROF.G1950
 ```
 * Source: F.G. Liebmann, W. Schachermayer, M. Willomitzer: Zur Erstellung von Sterbetafeln EROM 85 und EROF 85, Mitteilungen der Aktuarvereinigung Österreichs, Heft 4, Dezember 1986, p. 1--52.
 * Source: F.G. Liebmann, W. Schachermayer, M. Willomitzer: Die Generationen-Sterbetafeln EROM G 1950 und EROF G 1950, Mitteilungen der Aktuarvereinigung Österreichs, Heft 4, Dezember 1986, p. 54--94.
@@ -96,13 +139,12 @@ EROF.G1950.female.av
 
 * Usage with the `MortalityTables` package:
 ```{r AVOe1996R, results="hide"}
-mortalityTables.load("Austria_Annuities_AVOe1996R")
 AVOe1996R
 AVOe1996R.male
-AVOe1996R.male.av325
+AVOe1996R.male.av
 AVOe1996R.male.group
 AVOe1996R.female
-AVOe1996R.female.av325
+AVOe1996R.female.av
 AVOe1996R.female.group
 ```
 * Source: S. Jörgen, F.G. Liebmann, F.W. Pagler, W. Schachermayer: Herleitung der Sterbetafel AVÖ 1996R für Rentenversicherungen, Mitteilungen der Aktuarvereinigung Österreichs, Heft 9, November 1997, p. 39--82.
@@ -123,7 +165,6 @@ AVOe1996R.female.group
 
 * Usage with the `MortalityTables` package:
 ```{r AVOe2005R, results="hide"}
-mortalityTables.load("Austria_Annuities_AVOe2005R")
 AVOe2005R
 AVOe2005R.male
 AVOe2005R.male.group
@@ -151,9 +192,9 @@ AVOe2005R.unisex.nodamping
 AVOe2005R.unisex.nodamping.group
 ```
 * Sources: 
-  * R. Kainhofer, M. Predota, U. Schmock: [https://avoe.at/rententafel-avoe-2005r/](The New Austrian Annuity Valuation Table AVÖ 2005R), Mitteilungen der Aktuarvereinigung Österreichs, Heft 13, pp.55--135, http://avoe.at/pdf/mitteilungen/H13_w3.pdf
+  * R. Kainhofer, M. Predota, U. Schmock: [https://avoe.at/rententafel-avoe-2005r/](The New Austrian Annuity Valuation Table AVÖ 2005R), Mitteilungen der Aktuarvereinigung Österreichs, [Heft 13, pp.55--135](http://avoe.at/pdf/mitteilungen/H13_w3.pdf)
   * Aktuarvereinigung Österreichs: [https://avoe.at/rententafel-avoe-2005r-unisex/](Konstruktion der Unisex-Rententafel AVÖ 2005 R unisex), 2012
-  * R. Kainhofer: [https://avoe.at/zur-angemessenheit-der-rententafel-avoe-2005-r/](Zur Angemessenheit der REntentafel AVÖ 2005-R), Arbeitskreis Rechnungsgrundlagen, Aktuarvereinigung Österreichs (AVÖ), 24.Oktober 2019
+  * R. Kainhofer: [https://avoe.at/zur-angemessenheit-der-rententafel-avoe-2005-r/](Zur Angemessenheit der Rententafel AVÖ 2005-R), Arbeitskreis Rechnungsgrundlagen, Aktuarvereinigung Österreichs (AVÖ), 24.Oktober 2019
 
 
 
@@ -162,12 +203,12 @@ AVOe2005R.unisex.nodamping.group
 ### Comparisons
 
 ```{r AT.Annuity.Comparison}
-plotMortalityTables(RR67, EROM85.male, EROF85.female, EROM.G1950.male.av, EROF.G1950.female.av, AVOe1996R[, "Einzel"], AVOe2005R[c("m", "w"), "Einzel","loaded"],
-                    aes = aes(color = year), Period = 2020, title = "Austrian Annuity Tables, Period 2020", 
+plotMortalityTables(RR67, EROM85, EROF85, EROM.G1950, EROF.G1950, AVOe1996R[, "Einzel"], AVOe2005R[c("m", "w"), "Einzel","loaded"],
+                    aes = aes(color = table), Period = 2020, title = "Austrian Annuity Tables, Period 2020", 
                     legend.position = "right"
 ) + facet_grid(sex ~ .)
 
-plotMortalityTables(RR67, EROM85.male, EROF85.female, EROM.G1950.male.av, EROF.G1950.female.av, AVOe1996R[, "Einzel"],AVOe2005R[c("m", "w"), "Einzel","loaded"],
+plotMortalityTables(RR67, EROM85, EROF85, EROM.G1950, EROF.G1950, AVOe1996R[, "Einzel"],AVOe2005R[c("m", "w"), "Einzel","loaded"],
                     aes = aes(color = year), YOB = 1965, title = "Austrian Annuity Tables, Cohort 1965", 
                     legend.position = "right"
 ) + facet_grid(sex ~ .)
@@ -197,7 +238,6 @@ plotMortalityTables(RR67, EROM85.male, EROF85.female, EROM.G1950.male.av, EROF.G
   * 2010/12
 * Usage with the `MortalityTables` package:
 ```{r ÖVSt}
-mortalityTables.load("Austria_Census")
 mort.AT.census
 ```
 * Source: [Statistik Austria](http://statistik.at/web_de/statistiken/menschen_und_gesellschaft/bevoelkerung/sterbetafeln/index.html), http://statistik.at/wcm/idc/idcplg?IdcService=GET_NATIVE_FILE&RevisionSelectionMethod=LatestReleased&dDocName=022541
@@ -255,7 +295,7 @@ plotMortalityTables(
 
 ```{r AT.Census.Projections}
 plotMortalityTables(
-  mort.AT.census[c("m", "w"),"2011"],
+  mort.AT.census[c("m", "w"),"2010/12"],
   mort.AT.forecast %>% mT.setDimInfo(table = "Official forecast"),
   mort.AT.MCMC[c("m", "w")] %>% mT.setDimInfo(table = "MCMC forecast"),
 
@@ -407,6 +447,137 @@ PKBestandstafel.2010.16[1,1,1,1]
 ```
 
 
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  BELGIUM                              ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Belgium
+
+* MR/FR 
+* MK/FK (required by authorities), Makeham Law of Mortality
+* HFR 68-72 (census 1968-72)
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  BREAZIL                              ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+
+
+# Brazil
+
+## Annuities
+* 1996 US Annuity 2000 Basic table
+* BR-EMS 2010 (13 economic conglomerates, 82% market share)
+
+## Pension Plans
+* 1983 IAM (1983a)
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  CANADA                               ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+
+
+# Canada
+
+## Experience Tables
+* CIA 1969-75
+* CIA 1982-88
+  * Transactions SoA 1991-92 Reports, pp.701--729
+
+## Annuities
+* GAM-94 / CIA minimum improvement base (=UP-94 with margin of 7%)
+
+## Pension Plans
+* UP-94 / Scale AA
+* CPM4
+* CPM2014
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  CHILE                                ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Chile
+
+Tables in use:
+* RV2009 (Annuities' experience)
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  CHINA                                ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# China
+
+Tables in use:
+* CL(2000-2003)
+
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  DENMARK                                ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# DENMARK
+
+Tables in use:
+* G82 (mortality and disability); Makeham law
+
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  FINLAND                              ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Finland
+
+Tables in use:
+* Statutory TyEL Mortality 2016
+
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  FRANCE                               ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# France
+
+Tables in use:
+* TGH/TGF 2005 (French Population)
+* INSEE 2014-2016 (published by French National Institute of Statistics; https://www.ined.fr/en/everything_about_population/data/france/deaths-causes-mortality/mortality-tables/)
+* INSEE 2012-2014
+* Historic period tables (1806-1997):
+   https://www.ined.fr/Xtradocs/cdrom_vallin_mesle/contenu.htm
+
+
+
 <!-- ################################################################################ -->
 <!-- ################################################################################ -->
 <!-- ####                                  GERMANY                              ##### -->
@@ -430,12 +601,25 @@ Tables in use:
 * DAV 2004-R -- Annuities (2004--)
 
 
+https://aktuar.de/unsere-themen/lebensversicherung/Seiten/default.aspx
+https://aktuar.de/unsere-themen/lebensversicherung/Seiten/sterbetafeln.aspx
+
 
 
 ## Annuities
 
 ### Sterbetafel 1987 R
-[TODO: Get table data!]
+
+* Cohort life table using age-shift to account for mortality improvements
+  * Based on German population mortality 1981/83 (Trend from 1901-1983)
+  * Cohort life table 1950 as base for the age-shift
+* Usage with the `MortalityTables` package:
+```{r Sterbetafel1987R, results = "hide"}
+mortalityTables.load("Germany_Annuities_Sterbetafel1987R")
+Sterbetafel1987R
+Sterbetafel1987R.male
+Sterbetafel1987R.female
+```
   * Source: Lühr, K.-H.: Neue Sterbetafeln für die Rentenversicherung, Blätter DGVM XVII (1986), 485--513. https://link.springer.com/article/10.1007/BF02808817
   
 
@@ -447,6 +631,7 @@ Tables in use:
   * Usage with the `MortalityTables` package:
 ```{r DAV1994R, results = "hide"}
 mortalityTables.load("Germany_Annuities_DAV1994R")
+DAV1994R
 DAV1994R.male
 DAV1994R.male.av
 DAV1994R.female
@@ -466,14 +651,34 @@ Versicherungsmathematik, Band XXII, Heft 1
   * Usage with the `MortalityTables` package: (only Aggregate tables)
 ```{r DAV2004R, results="hide"}
 mortalityTables.load("Germany_Annuities_DAV2004R")
+DAV2004R
+
 DAV2004R.male
+DAV2004R.male.selekt
 DAV2004R.male.2Ord
+DAV2004R.male.2Ord.selekt
+DAV2004R.male.Bestand
+DAV2004R.male.Bestand.selekt
+DAV2004R.male.B20
+DAV2004R.male.B20.selekt
+
 DAV2004R.male.av
-DAV2004R.male.av.2Ord
+DAV2004R.male.Bestand.av
+DAV2004R.male.B20.av  
+
 DAV2004R.female
+DAV2004R.female.selekt
 DAV2004R.female.2Ord
+DAV2004R.female.2Ord.selekt
+DAV2004R.female.Bestand
+DAV2004R.female.Bestand.selekt
+DAV2004R.female.B20
+DAV2004R.female.B20.selekt
+
 DAV2004R.female.av
-DAV2004R.female.av.2Ord
+DAV2004R.female.Bestand.av
+DAV2004R.female.B20.av  
+
 ```
   * Source: [Deutsche Aktuarvereinigung (DAV)](https://aktuar.de/unsere-themen/lebensversicherung/Seiten/default.aspx), https://aktuar.de/unsere-themen/lebensversicherung/sterbetafeln/2018-01-24_DAV-Richtlinie_Herleitung_DAV2004R.pdf
 
@@ -482,11 +687,12 @@ DAV2004R.female.av.2Ord
 
 ```{r DE.Annuities.Comparison}
 plotMortalityTables(
+  Sterbetafel1987R,
   DAV1994R.male, DAV1994R.female, 
   DAV2004R.male, DAV2004R.male.2Ord, 
   DAV2004R.female, DAV2004R.female.2Ord,
   
-  Period = 2000, aes = aes(linetype = sex, color = interaction(year, data)), 
+  Period = 2000, aes = aes(linetype = sex, color = interaction(table, data)), 
   legend.position = c(0.01, 0.99), legend.justification = c(0,1), legend.key.width = unit(2, "lines"),
   title = "Comparison of German Annuity Tables, Period 2000"
 ) + labs(linetype = NULL, color = NULL)
@@ -660,6 +866,28 @@ https://aktuar.de/unsere-themen/lebensversicherung/Seiten/default.aspx
 
 ## MTPL Annuities
 
+### DAV 1997 HUR
+
+* gender-specific cohort table for German whole life insurances
+  * Mortality improvement modelled using trend factors (taken from DAV 1994 R) and approximation via age-shift
+* Base table Based on German TPL-annuitant data
+* Generated: Deutsche Aktuarvereinigung (DAV), "HUK-Versicherungen" committee
+* Publisher: Deutsche Aktuarvereinigung (DAV), https://aktuar.de/unsere-themen/lebensversicherung/Seiten/default.aspx
+
+* Usage with the `MortalityTables` package:
+```{r DAV1997HUR,results="hide"}
+mortalityTables.load("Germany_MTPL_DAV1997HUR")
+DAV1997HUR
+DAV1997HUR.male
+DAV1997HUR.female
+DAV1997HUR.av
+```
+* Source: Sterbetafel 1997 HUR, DAV-Mitteilungen Nr. 8, , 1997. https://aktuar.de/Dateien_extern/DAV/LV/UT_LV_10.pdf
+
+
+
+
+
 ### DAV 2006 HUR
 [TODO]
 https://aktuar.de/unsere-themen/lebensversicherung/Seiten/default.aspx
@@ -701,9 +929,460 @@ https://aktuar.de/unsere-themen/lebensversicherung/Seiten/default.aspx
 [TODO]
 
 
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                   IRELAND                                             ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Ireland
+
+## Population Mortality
+
+https://www.cso.ie/en/statistics/birthsdeathsandmarriages/archive/irishlifetables1926to2012/
+
+* gender-specific period tables
+  * male+female, ages 0--105, earlier tables gave only $l_x$ and $e_x$, but no $q_x$
+* Central Statistics Office life tables:
+  * Irish Life Table No. 1 1925-1927
+  * Irish Life Table No. 2 1935-1937
+  * Irish Life Table No. 3 1940-1942
+  * Irish Life Table No. 4 1945-1947
+  * Irish Life Table No. 5 1950-1952
+  * Irish Life Table No. 6 1960-1962
+  * Irish Life Table No. 7 1965-1967
+  * Irish Life Table No. 8 1970-1972
+  * Irish Life Table No. 9 1978-1980
+  * Irish Life Table No. 10 1980-1982
+  * Irish Life Table No. 11 1985-1987
+  * Irish Life Table No. 12 1990-1992
+  * Irish Life Table No. 13 1995-1997
+  * Irish Life Table No. 14 2001-2003
+  * Irish Life Table No. 15 2005-2007
+  * Irish Life Tables No. 16 2010-2012
+
+* Usage with the `MortalityTables` package:
+```{r IrishCensus}
+#mortalityTables.load("Irish_Census")
+#mort.IE.census
+```
+* Source: Central Statistics Office, https://www.cso.ie/en/statistics/birthsdeathsandmarriages/irishlifetables/
 
 
 
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  ISRAEL                               ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Israel
+
+Tables in use:
+* Israel Mortality Tables 2013
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  ITALY                                ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Italy
+
+Tables in use:
+* ISTAT2018 (Mortality table provided by the Italian National Institute of Statistics)
+* ISTAT2014
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  JAPAN                                ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Japan
+
+Tables in use:
+* SMT 2007 (for Annuities; Japanese population)
+* EPI tables (for Pension Plans; Census tables with experience from publich Employees' pension insurance)
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  Korea                               ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Korea
+
+Tables in use:
+* 6th EMT (insured lives and corporate pension schemes)
+* 2018 Korea Standard Mortality (KIDI)
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  MEXICO                               ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Mexico
+
+## Annuities
+* EMSSAH-CMG-09
+* EMSSAM-CMG-09 (minimum mortality tables)
+
+## Pension Plans
+* EMSSAH 97, EMSSAM-97
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                   NETHERLANDS                                         ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Netherlands
+
+## Prognosetafel
+
+* Prognosetafel 2010-2060
+* Prognosetafel 2012
+* Prognosetafel 2014
+* Prognosetafel 2016
+* Prognosetafel 2018
+* Prognosetafel 2020 (https://www.ag-ai.nl/view.php?action=view&Pagina_Id=998)
+
+https://www.ag-ai.nl/view.php?action=view&Pagina_Id=612
+https://www.ag-ai.nl/view.php?action=view&Pagina_Id=888
+
+*  Period tables: https://www.ag-ai.nl/view.php?action=view&Pagina_Id=612
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  NORWAY                               ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Norway
+
+Tables in use:
+* K2013
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  PERU                                 ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Peru
+
+Tables in use:
+* RV2004 modified adjusted (Chilean annuity+social security experience, modified to Peruvian experience)
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  SPAIN                               ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Spain
+
+Tables in use:
+* PEM/F-2000
+* PERM/F 2000 (spanisch population and Swiss population)
+* PERM/F 2000P
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                                  SWEDEN                               ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Sweden
+
+Tables in use:
+* DUS06
+* DUS14
+  * https://www.svenskforsakring.se/dus14
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                   SWITZERLAND                                          ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# Switzerland
+
+## Pensions
+
+### EVK -- Eidgenössische Versorgungskasse
+* EVK 1950
+* EVK 1960
+* EVK 1970
+* EVK 1980
+* EVK 90
+* EKV 2000
+  * Kaspar Rufibach, Manuel Bertschy, Manuela Schuettel, Michael Vock, Tina Wasserfallen: Eintrittsraten und Austrittswahrscheinlichkeiten EVK 2000, Mitteilungen der Schweizerischen Aktuarvereinigung, 2001(1), 49-70
+* EKV 2010
+
+### VZ  -- Versicherungskasse der Stadt Zürich
+* VZ 1950
+* VZ 1960
+* VZ 1970
+* VZ 1980
+* VZ 90
+* VZ 2000
+* VZ 2005
+* VZ 2010
+* VZ 2015
+  * https://www.pkzh.ch/pkzh/de/index/publikationen/technische-grundlagen-vz.html
+* VZ 2020
+
+### BVG / LPP
+
+* BVG 2000
+* BVG 2005
+* BVG 2010
+  * http://www.bvg2010.ch/; Experience data of the participating institutions 2005--2009
+* BVG 2015
+  * http://www.bvg-grundlagen.ch/
+
+## Annuities
+
+* ERM/F 2000
+
+## Population
+
+
+
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+<!-- ####                   UNITED KINGDOM                                      ##### -->
+<!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
+# United Kingdom
+
+## Population
+
+* UK, GB, England, Wales, Scotland & Northern Ireland National Life Tables  
+    * Yearly observed tables from 1980-82 to 2017-19
+    * https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/lifeexpectancies/bulletins/nationallifetablesunitedkingdom/2017to2019/relateddata
+
+Usage in R:
+```{r UKNationalLifeTables}
+mort.UK.national
+
+plotMortalityTables(
+  mort.UK.national.UK.male,
+  mort.UK.national.UK.female,
+  mort.UK.national.GB.male,
+  mort.UK.national.GB.female,
+  mort.UK.national.EW.male,
+  mort.UK.national.EW.female,
+  mort.UK.national.Eng.male,
+  mort.UK.national.Eng.female,
+  mort.UK.national.Wales.male,
+  mort.UK.national.Wales.female,
+  mort.UK.national.Sco.male,
+  mort.UK.national.Sco.female,
+  mort.UK.national.NI.male,
+  mort.UK.national.NI.female,
+  Period = 2018,
+  aes = aes(color = country),
+  legend.position = "right",
+  legend.key.width = unit(2, "line")
+) + facet_grid(sex~.) + labs(color = NULL)
+
+```
+
+## Annuities
+
+* PCMA/PCFA 2000 tables (UK insurance company annuitants)
+
+## Pension Plans
+
+* Self-Administered Pension Scheme (SAPS) tables series 1 / 2
+
+## CMI
+
+https://www.actuaries.org.uk/learn-and-develop/continuous-mortality-investigation/cmi-mortality-and-morbidity-tables
+
+* A1924-29	Permanent Assurances, males, combined
+* A1949-52	Permanent Assurances, males, combined
+* A1967-70	Permanent Assurances, males, combined
+* A1967-70(5) 	Permanent Assurances, males, combined - five years select
+* a(55)m, a(55)f	Immediate Annuitants, lives
+* a(90)m, a(90)f	Immediate Annuitants, lives
+* FA1975-78	Permanent Assurances, males, combined
+* PA(90)m, PA(90)f	Life Office Pensioners, Normals, amounts
+
+
+
+## A1924-29
+
+## '80' Series Tables
+
+* AM80	Permanent Assurances, Males
+* AF80 	Permanent Assurances, Females
+* AM80(5)	Permanent Assurances, Male
+* TM80	Temporary Assurances, Males
+* PML80	Pensioners, Males, Lives
+* PMA80	Pensioners, Males, Amounts
+* PFL80	Pensioners, Females, Lives
+* PFA80	Pensioners, Females, Amounts
+* IM80	Annuitants, Males
+* IF80	Annuitants, Females
+* WL80	Widows, Lives
+* WA80	Widows, Amounts
+
+Source: CMI: 80 Series base mortality tables 
+
+## '92' Series Tables
+
+‘92’ series mortality tables for assured lives, annuitants and pensioners
+
+* AM92	Permanent Assurances, Males
+* AF92	Permanent Assurances, Females
+* TM92	Temporary Assurances, Males
+* TF92	Temporary Assurances, Females
+* PML92	Pensioners, Males, Lives
+* PMA92	Pensioners, Males, Amounts
+* PMA92	Pensioners, Males, Amounts (C=2010)
+* PFL92	Pensioners, Females, Lives
+* PFA92	Pensioners, Females, Amounts
+* PFA92	Pensioners, Females, Amounts (C=2010)
+* IML92	Immediate Annuitants, Males, Lives
+* IMA92	Immediate Annuitants, Males, Amounts
+* IFL92	Immediate Annuitants, Females, Lives
+* IFA92	Immediate Annuitants, Females, Amounts
+* RMV92	Retirement Annuitants, Males, Vested
+* RFV92	Retirement Annuitants, Females, Vested
+* WL92	Widows, Lives
+* WA92	Widows, Amounts 
+
+Source: CMI: 92 Series base mortality tables, https://www.actuaries.org.uk/learn-and-develop/continuous-mortality-investigation/cmi-mortality-and-morbidity-tables/92-series-tables
+
+
+## ‘00’ series tables
+
+Final values of mortality rates for the "00" series assured lives mortality tables for assured lives, annuitants, and pensioners
+* AMC00	Permanent Assurances, males, combined
+* AMS00	Permanent Assurances, males, smokers
+* AMN00	Permanent Assurances, males, non-smokers
+* AFC00	Permanent Assurances, females, combined
+* AFS00	Permanent Assurances, females, smokers
+* AFN00	Permanent Assurances, females, non-smokers
+* TMC00	Temporary Assurances, males, combined
+* TMS00	Temporary Assurances, males, smokers
+* TMN00	Temporary Assurances, males, non-smokers
+* TFC00	Temporary Assurances, females, combined
+* TFS00	Temporary Assurances, females, smokers
+* TFN00	Temporary Assurances, females, non-smokers
+
+Final values of mortality rates for the "00" series annuitant and pensioner mortality tables
+
+* IML00	Immediate Annuitants, males, lives
+* IFL00	Immediate Annuitants, females, lives
+* PNML00	Pensioners, males, Normal, lives
+* PNMA00	Pensioners, males, Normal, amounts
+* PEML00	Pensioners, males, Early, lives
+* PEMA00	Pensioners, males, Early, amounts
+* PCML00	Pensioners, males, Combined, lives
+* PCMA00	Pensioners, males, Combined, amounts
+* PNFL00	Pensioners, females, Normal, lives
+* PNFA00	Pensioners, females, Normal, amounts
+* PEFL00	Pensioners, females, Early, lives
+* PEFA00	Pensioners, females, Early, amounts
+* PCFL00	Pensioners, females, Combined, lives
+* PCFA00	Pensioners, females, Combined, amounts
+* WL00	Widows, lives
+* WA00	Widows, amounts
+* RMD00	Retirement Annuitants, males, deferred
+* RMV00	Retirement Annuitants, males, vested
+* RMC00	Retirement Annuitants, males, combined
+* RFD00	Retirement Annuitants, females, deferred
+* RFV00	Retirement Annuitants, females, vested
+* RFC00	Retirement Annuitants, females, combined
+* PPMD00	Personal Pensioners, males, deferred
+* PPMV00	Personal Pensioners, males, vested
+* PPMC00	Personal Pensioners, males, combined
+* PPFD00	Personal Pensioners, females, deferred
+* PPFV00	Personal Pensioners, females, vested
+* PPFC00	Personal Pensioners, females, combined
+
+
+Source: CMI: 00 Series tables, https://www.actuaries.org.uk/learn-and-develop/continuous-mortality-investigation/cmi-mortality-and-morbidity-tables/00-series-tables
+
+
+
+## ‘S1’ series tables
+
+‘S1’ series of mortality tables for assured lives, annuitants and pensioners
+
+* S1PFL	All pensioners (excluding dependants), Female, Lives
+* S1PFA	All pensioners (excluding dependants), Female, Amounts
+* S1PFA_L	All pensioners (excluding dependants), Female, Amounts, Light
+* S1PFA_H	All pensioners (excluding dependants), Female, Amounts, Heavy
+* S1PML	All pensioners (excluding dependants), Male, Lives
+* S1PMA	All pensioners (excluding dependants), Male, Amounts
+* S1PMA_L	All pensioners (excluding dependants), Male, Amounts, Light
+* S1PMA_H	All pensioners (excluding dependants), Male, Amounts, Heavy
+* S1DFL	Dependants, Female, Lives
+* S1DFA	Dependants, Female, Amounts
+* S1DFA_L	Dependants, Female, Amounts, Light
+* S1DFA_H	Dependants, Female, Amounts, Heavy
+* S1NFA	Normal Health pensioners, Female, Amounts
+* S1NFA_L	Normal Health pensioners, Female, Amounts, Light
+* S1NFA_H	Normal Health pensioners, Female, Amounts, Heavy
+* S1NMA	Normal Health pensioners, Male, Amounts
+* S1NMA_L	Normal Health pensioners, Male, Amounts, Light
+* S1NMA_H	Normal Health pensioners, Male Amounts, Heavy
+* S1IFA	Ill-health pensioners, Female, Amounts
+* S1IMA	Ill-health pensioners, Male, Amounts
+
+Source: CMI: S1 Series tables, https://www.actuaries.org.uk/learn-and-develop/continuous-mortality-investigation/cmi-mortality-and-morbidity-tables/s1-series-tables
+
+## 'S2' Series Tables
+
+NOT publically available!
+
+Source: CMI: 
+
+## Mortality Projections
+
+https://www.actuaries.org.uk/learn-and-develop/continuous-mortality-investigation/cmi-working-papers/mortality-projections
+
+## CMI  Morbidity Tables
+
+Morbidity tables
+“08” Series accelerated critical illness tables	Based on 2007-2010 experience collected from UK insurance companies, published in CMI Working Paper 94, 2017.
+"AC04" series critical illness tables	Diagnosis rate tables based on 2003-2006 experience of accelerated critical illness policies collected from UK insurance companies, published in CMI Working Paper 50  (2010). See also CMI Working Paper 52 and CMI Working Paper 58 (both 2011).
+"IP11" income protection tables	Claim inception and termination rates for individual income protection based on 2007-2016 experience of individual income protection policies collected from UK insurance companies, released alongside Working Paper 136 (2020).
+“IP06” income protection tables
+
+Claim inception rates for individual income protection based on 2003-2010 experience of individual income protection policies collected from UK insurance companies, released alongside Working Paper 120 (2019).
+"IPM 1991-98" income protection tables	"Type A" inception rate tables for occupation class 1 males based on 1991-1998 experience of income protection policies collected from UK insurance companies. The development of these rates is documented in a number of papers, with an overview contained in CMI Working Paper 48. The spreadsheet contains inception rates only - termination rates can be derived by a formula.
+"SM1975-78" income protection tables tables	These tables were based on 1975-1978 experience of income protection (or Permanent Health Insurance) policies collected from UK insurance companies. They are published in CMI Report 12 (1991) but are not available in a spreadsheet.
+
+https://www.actuaries.org.uk/learn-and-develop/continuous-mortality-investigation/cmi-mortality-and-morbidity-tables
 
 <!-- ################################################################################ -->
 <!-- ################################################################################ -->
@@ -717,17 +1396,223 @@ Source: [https://content.naic.org/sites/default/files/pbr_data_valuation_manual_
 
 [TODO]
 
+* 1941 CSI Table (Commissioners' Standard Industrial Mortality Table)
+* 1941 SSI Table (Sub-Standard Industrial Mortality Table)
+
+* 1960 CSG (Commissioners Standard Group Basic Mortality Table), Experience and Basic tables
+* 1961 Standard Industrial Tables
+* 1961 CSI Extended Term Tables
+
+  
+
+* Commissioners 1960 Standard Group Mortality Table
+  * [Transactions SoA 1961, Vol.13 No.37](https://www.soa.org/globalassets/assets/library/research/transactions-of-society-of-actuaries/1961/january/tsa61v13pt1n37ab30.pdf)
+  
+* 1960 Commissioners' Standard Group Mortality Table
+* 1961 Commissioners Standard Industial Mortality Table (1961 CSI), Proceedings of NAIC, 1961, Vol II, pp.538--540
+* 1961 Commissioners Industial Extended Term Insurance Table (1961 CIET), Proc.NAIC, 1961 Vo. II. pp.541-543
+* 2017 Commissioners Standard Guaranteed Issue Mortality Tables (2017 CSGI)
+
+* 2015 Preneed Basic 
+  * https://www.soa.org/resources/experience-studies/2017/preneed-mortality-report/
+* UP-1984
+
+* 1951 GAM
+* 1955 American Annuity
+* 1963 Annuity Experience
+* 1966 Group Annuity Experience
+* 1971 GAM
+* 1971 IAM
+* 1973 Annuity Experience
+* 1983 IAM
+* 1983 GAM
+* 1983a
+* 1994 GAM 
+* 1996 IAM
+* Annuity 2000
+* 2012 IAM
+
+* UP-1984 (Unisex Pension)
+* UP-94
+* RP-2000 (Retirement Plan)
+* RP-2014 + Scale MP-2014, MP-2015, MP-2016, MP-2017, MP-2018, MP-2019, MP-2020
+* RPH-2014
+* PubT-2010, PubS-2010, PubG-2010, PubNS-2010, Pub-2010 + Headcount versions
+* Pri-2012, Pri.H-2012
+
+
+* 2000-2004 Preneed Mortality Table
+* SAA Mortality Rates (Period, 1900-2007)
+* IRS 2009/2010/2011/2012/2013/2014/2015/2016
+
+* Sub-Standard Industrial Mortality Table
+
+## Accidental Death Benefits
+
+* 1926--33 Intercompany Double Indemnity Table for Accidental Death Benefits
+* 1951-56 Accidental Death Experience
+  * Transactions of the Society of Actuaries 1958
+* 1959 Accidental Death Benefits Table
+  * Norman Brodie and William J. November: A New Table for Accidental Death Benefits, Transactions of Society of Actuaries, 1959 Vol. 11 No. 31, pp.749--
+  
+Usage in R:
+```{r AccidentalDeathBenefitsUS}
+plotMortalityTables(
+  US.AccDeath.1926, US.AccDeath.1951.56.Experience, US.AccDeath.1959,
+  legend.position = c(0.01, 0.99), legend.justification = c(0,1),
+  legend.key.width = unit(2, "lines"))
+```
+
 ## Annuities (individual and group)
+
+* 1971 IAM (Individual Annuity Mortality)
+* 1983 GAM (Group Annuity Mortality)
+* 1983 Table a IA (Individual Annuity)
+* 1994 GAR (Group Annuity Reserving)
+* 1996 IAM (Individual Annuity Mortality)
+* 2012 IAR (Individual Annuity Reserving)
+* Annuity 2000 
+
+
+* 1983 Group Annuity Mortality Table without Projection
+* Annuity 2000 Mortality Table
+* 2012 Individual Annuity Reserve Valuation Table (2012 IAR = 2012 IAM Period Table + Scale G2
+  * 2012 IAM Basic table with selection factors $F_x$ (when little or no experience is available on a business sgment (VM-21 Section 11 B.3)
+
+* 1983 IAM (1983a)
+* GAM-94 generational tables using Scale AA 
+  * UP-94 table with 7% margin
 
 ## Whole Life Insurances
 
+* 1941 CSO Table
+  * Harry W. Jones, “The Commissioner’s 1941 Mortality Table” written discussion of “ The Commissioner’s 1941 Standard Mortality Table, Vol. XLII, Page 314”, Transaction of the Society of Actuaries of America, Vol. XLIII (1942) p. 85
+* 1958 CSO and CET Tables
+  * Industry Actuarial Advisory Committee of the Society of Actuaries. “General”, Transactions of the Society of Actuaries, Vol. X, No. 28. (1958), http://www.soa.org/library/research/transactions-of-society-of-actuaries/1958/january/tsa58v10n2827.pdf. p 42
+  * Female extension: Society of Actuaries “Section II. “Female Extension of the 1958 CSO and CET Mortality Tables”, Transactions of Society of Actuaries, Vol. XI, No. 31 (1959), http://www.soa.org/library/research/transactions-of-society-of-actuaries/1959/january/tsa59v11n3193.pdf
+  * ALB: Society of Actuaries, “Report of the Committee for the Preparation of Monetary Tables. I. 1958 CSO and CET Mortality Tables on the Age Last Birthday Basis.”,  Transactions of the Society of Actuaries Vol. 13, No. 37. (1961), http://www.soa.org/library/research/transactions-of-society-of-actuaries/1961/january/tsa61v13pt1n37ab31.pdf
+* 1980 CSO and CET Mortality Tables (Composite, Smoker/Non-Smonker, Blended); Proc. NAIC, 180 Vol. I, p.598, 1984 pp.406--413; 1984 pp.396-400
+  * Composite: 
+    * “Report of the Special Committee to Recommend New Mortality Tables For Valuation”, Transactions of the Society of Actuaries, Vol. XXXIII, Society of Actuaries. (1981), http://www.soa.org/Library/Research/Transactions-Of-Society-Of-Actuaries/1981/January/tsa81v3323.pdf,
+    * Committee to Recommend New Mortality Tables for Valuation, "1980 CSO and 1980 CET Mortality Tables on an Age Last Birthday Basis", Transactions Society of Actuaries Vol.  XXXIII, Society of Actuaries (1981) p. 673. http://www.soa.org/Library/Research/Transactions-Of-Society-Of-Actuaries/1981/January/tsa81v3324.pdf
+  * Smoker/Nonsmoker: 
+    * http://www.soa.org/library/research/transactions-reports-of-mortality-moribidity-and-experience/1980-89/1982/january/tsr8210.pdf
+  * Blended:
+    * Robert J. Johansen, et al., “Report of the Society of Actuaries Committee on Nonforfeiture and Valuation Mortality Problems - Individual Life Insurance and Annuities, November 28, 1983 Blended 1980 CSO and 1980 CET Mortality Tables”, Transactions of the Society of Actuaries Vol. XXXVII , Society of Actuaries (1983) Appendix E, http://www.soa.org/Library/Research/Transactions-Of-Society-Of-Actuaries/1985/January/tsa85v3712.pdf
+  * Selection Factors:
+    * Special Committee to Recommend new Mortality Tables for Valuation, “Report on Development of Selection Factors to be Applied to Tables K as an Alternative Method of Determining Life Insurance Reserves and Deficiency Reserve Requirements”, Transactions of the Society of Actuaries, Vol. XXXIII, Society of Actuaries (1981), http://www.soa.org/Library/Research/Transactions-Of-Society-Of-Actuaries/1981/January/tsa81v3323.pdf
+* 2001 CSO (Commissioners Standard Ordinary), Mortality Table (NAIC minimum for policies 2017-2019)
+  * https://www.actuary.org/content/cso-task-force-report
+* 2001 CSO Preferred
+  * https://www.soa.org/resources/experience-studies/2005-2009/intl-2001-cso-preferred-class-structure-mortality-tables/
+* 2017 Commissioners' Standard Ordinary (CSO) Tables (NAIC minimum for policis 2020-)
+  * https://www.soa.org/resources/experience-studies/2015/2017-cso-tables/
+
+
+```{r CSO}
+plotMortalityTables(CSO1941, CSO1941.basic, title = "1941 CSO tables")
+
+plotMortalityTables(CSO1958, CET1958, CSO1958.basic, aes = aes(color = sex), title = "1958 CSO and CET tables") + facet_grid(table ~ageType)
+
+plotMortalityTables(CSO1980, aes = aes(color = sex)) + facet_grid(ageType ~ collar)
+plotMortalityTables(CSO1980.basic, aes = aes(color = sex)) + facet_grid(ageType ~ collar)
+plotMortalityTables(CSO1980.basic, aes = aes(color = collar, linetype = sex))
+
+# Selection effects of 1980 CSO table
+plotMortalityTables(
+  CSO1980[c(1,4,7),"ANB","Composite"] %>% mT.setDimInfo(SelectionAge = "Ultimate"),
+  CSO1980.select[c(1,4,7),"ANB","Composite"] %>% getPeriodTable(Period = 1980, selectionAge = 20, ages = 20:99) %>% mT.setDimInfo(SelectionAge = 20),
+  CSO1980.select[c(1,4,7),"ANB","Composite"] %>% getPeriodTable(Period = 1980, selectionAge = 40, ages = 40:99) %>% mT.setDimInfo(SelectionAge = 40),
+  CSO1980.select[c(1,4,7),"ANB","Composite"] %>% getPeriodTable(Period = 1980, selectionAge = 60, ages = 60:99) %>% mT.setDimInfo(SelectionAge = 60),
+  CSO1980.select[c(1,4,7),"ANB","Composite"] %>% getPeriodTable(Period = 1980, selectionAge = 80, ages = 80:99) %>% mT.setDimInfo(SelectionAge = 80),
+ aes = aes(color = as.factor(SelectionAge)),
+ legend.position = "right", title = "1980 CSO selection effects",
+ legend.key.width = unit(2, "lines")
+) + facet_grid(sex~.) + labs(color = "Selection age")
+
+
+plotMortalityTables(CSO2001.Preferred[,,"ANB",], legend.position = "bottom", title = "CSO 2001 Preferred") + facet_grid(sex ~ collar) + aes(color = Preferred)
+
+plotMortalityTables(CSO2017) + facet_grid(ageType ~ collar) + aes(linetype = loaded, color = sex)
+
+plotMortalityTables(CSO2017) + facet_grid(sex ~ ageType) + aes(linetype = loaded, color = collar)
+plotMortalityTables(CSO2017.Preferred[,,"ANB",,]) + facet_grid(sex ~ collar) + aes(linetype = loaded, color = Preferred)
+
+
+```
+
 ## Experience Tables
 
+"Basic Select and Ultimate" tables are raw experience data, typically without smoothing, 
+while "VBT" apply smoothing on top of the basic table.
+
+* 1925-39 Basic Tables
+  * Transactions American Society of Actuaries, Vol.XLII Part 11, pp.181--187
+* 1946-49 Basic Tables
+  * [Transactions SoA 1950 Vol.2 No.4, pp.505--512](https://www.soa.org/globalassets/assets/library/research/transactions-of-society-of-actuaries/1950/january/tsa50v2n457.pdf)
+* 1955-60 Basic Tables
+  * [Transactions SoA 1962 Reports, pp.44--58](https://www.soa.org/globalassets/assets/library/research/transactions-reports-of-mortality-moribidity-and-experience/1960-69/1962/january/TSR623.pdf)
+* 1965-70 Basic Select and Ultimate
+  * ANB: [Transactions SoA 1973 Reports, pp.199--223](https://www.soa.org/globalassets/assets/library/research/transactions-reports-of-mortality-moribidity-and-experience/1970-79/1973/january/TSR735.pdf)
+  * ALB: [Transactions SoA 1977 Vol.29](http://www.soa.org/Library/Research/Transactions-Of-Society-Of-Actuaries/1977/January/tsa77v295.pdf)
+* 1975-80 Basic Select and Ultimate; 15 years select
+  * [Transactions SoA 1982 Reports, pp.55--81](https://www.soa.org/globalassets/assets/library/research/transactions-reports-of-mortality-moribidity-and-experience/1980-89/1982/january/TSR823.pdf)
+  * [Transactions SoA 1986 Reports, pp.205--227](https://www.soa.org/globalassets/assets/library/research/transactions-of-society-of-actuaries/1986/january/tsa86v3810.pdf)
+* 1985-90 Basic Select and Ultimate, 25 years select
+  * https://www.soa.org/resources/experience-studies/1990-1999/final-85-90-basic-select/
+* 1990-95 Basic Select and Ultimate Tables
+  * https://www.soa.org/resources/experience-studies/2000-2004/90-95-basic-select
+  
+* 2001 VBT (Valuation Basic Table)
+  * https://www.soa.org/resources/experience-studies/2005-2009/final-report-life-insurance-valuation
+* 2008 VBT (Valuation Basic Table)
+  * https://www.soa.org/resources/experience-studies/2005-2009/2008-vbt-report-tables/
+* 2015 VBT (Valuation Basic Table)
+  * https://www.soa.org/resources/experience-studies/2015/2015-valuation-basic-tables/
+
+
+```{r USABasicSelect}
+plot(
+  US.1925.39.Basic,
+  USA.1946.49.Basic,
+  USA.1955.60.Basic.U, USA.1955.60.Basic.M, USA.1955.60.Basic.F,
+  
+  USA.1965.70.Basic[,"ALB"],
+  USA.1975.80.Basic[,"ALB"],
+  USA.1985.90.Basic[,"ALB"],
+  USA.1990.95.Basic[,"ALB"],
+  VBT2001[,"ALB","Composite"],
+  VBT2008[,"ALB","Composite"],
+  VBT2015[,"ALB","Unismoke"],
+  
+  aes = aes(color = table),
+  legend.position = "right", legend.key.width = unit(2, "lines")
+) + facet_grid(sex~.)
+```
+
+```{r 1990BasicSelect.Variants}
+plotMortalityTables(
+  USA.1990.95.Basic.Breakdown, aes = aes(color = ageType), legend.position = "bottom", 
+  title = "Breakdown-Variants of the USA 1990-95 Basic Select Table"
+) +
+  facet_grid(collar ~ sex)
+```
+
+
+```{r USA.VBT}
+plotMortalityTables(
+  VBT2001[,"ALB",],
+  
+  aes = aes(color = table, linetype = collar),
+  legend.position = "right", legend.key.width = unit(2, "lines")
+) + facet_grid(sex~.)
+```
 ## Pension Plans
 
 ### RP-2000
+Projected beyond 2000 using scale AA
 
-### RP-2014
+### RP-2014 / MP-2014
 
 Source: Society of Actuaries. RP-2014 Mortality Tables Report. Techn. Ber. Okt. 2014. URL: https://www.soa.
 org/experience-studies/2014/research-2014-rp/.

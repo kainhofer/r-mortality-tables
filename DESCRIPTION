@@ -33,6 +33,7 @@ License: GPL (>= 2)
 RoxygenNote: 7.1.1
 Collate: 
     'DocumentData.R'
+    'actuarial_functions.R'
     'mortalityTable.R'
     'mortalityTable.period.R'
     'mortalityTable.ageShift.R'

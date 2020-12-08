@@ -10,7 +10,7 @@
 \usage{
 getPeriodTable(object, Period, ...)
 
-\S4method{getPeriodTable}{mortalityTable}(object, Period, ...)
+\S4method{getPeriodTable}{mortalityTable}(object, Period, ages = NULL, ...)
 
 \S4method{getPeriodTable}{array}(object, Period, ...)
 

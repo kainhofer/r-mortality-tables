@@ -4,7 +4,9 @@
 \alias{baseProbabilities}
 \alias{baseProbabilities,mortalityTable.period-method}
 \alias{baseProbabilities,mortalityTable.mixed-method}
-\title{Return the base death probabilities of the life table}
+\title{Return the base death probabilities of the life table (with a possible
+selection effect applied, but without further processing like modifications,
+margins or trend extrapolation)}
 \usage{
 baseProbabilities(object, ..., selectionAge = NULL)
 
@@ -20,7 +22,9 @@ baseProbabilities(object, ..., selectionAge = NULL)
 \item{selectionAge}{Age when selection starts (for tables with the \code{deathProbs} slot being a matrix rather than a single vector and for tables with \code{selectionFactors set})}
 }
 \description{
-Return the base death probabilities of the life table
+Return the base death probabilities of the life table (with a possible
+selection effect applied, but without further processing like modifications,
+margins or trend extrapolation)
 }
 \section{Methods (by class)}{
 \itemize{
